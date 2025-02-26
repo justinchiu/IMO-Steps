@@ -24,6 +24,8 @@ The dataset is released under MIT license. Contributions are welcome through pul
 | Total   | 1,329        | 522 (39.3\%)                  | 504 (37.9\%)                              | 436 (32.8\%)                  | 439 (33.0\%)                  | 316 (23.8 \%)                 |
 
 ## Distribution of Proof Length of LLM-Generated Proofs
+![LLM Comparison](assets/all_llms.png)
+The figure demonstrates that the SOTA LLMs tend to write shorter proofs, which is a potential challenge for lengthier proof procedures that require long-term planning.
 
 ## Citation
 The dataset, motivations and additional results are available [here](https://openreview.net/forum?id=CrKMqRAhBo)
@@ -39,7 +41,7 @@ note={Under review}
 }
 ```
 ## Versioning
-The Lemmas Dataset is explicitly written for the latest available Lean4 version at the moment - v4.17.0. Any subsequent release can impact the 
+The Lemmas Dataset is explicitly written for the latest available Lean4 version at the moment - v4.17.0. Any subsequent release can impact the released lemmas and some proofs might need future revision.
 
 ## Formalised IMO Problems Statistics
 | #     | Year | Problem | Topic         | in miniF2F | Lean proof publicly available | # of lemmas | # of lines of Lean4 proof |
