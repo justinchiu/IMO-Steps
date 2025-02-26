@@ -830,14 +830,7 @@ lemma imo_2023_p4_2_6
   linarith
 
 
-
-
-
-
-
-
 lemma imo_2023_p4_3
---  my_2
   (x a: ℕ → ℝ)
   (hxp: ∀ (i : ℕ), 0 < x i)
   (h₀: ∀ (n : ℕ),
@@ -948,8 +941,6 @@ lemma imo_2023_p4_3
           = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-      -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-      -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
       have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
                 * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -1078,8 +1069,6 @@ lemma imo_2023_p4_3_1
           = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-      -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-      -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
       have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
                 * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -1220,8 +1209,6 @@ lemma imo_2023_p4_3_3
           = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-      -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-      -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
       have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
                 * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -1373,8 +1360,6 @@ lemma imo_2023_p4_3_6
           = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-      -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-      -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
       have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
                 * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -1665,8 +1650,6 @@ lemma imo_2023_p4_3_12
           = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-      -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-      -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
       have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
                 * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -1740,8 +1723,6 @@ lemma imo_2023_p4_3_13
         = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
       rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
       norm_num
-    -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-    -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
     have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
               * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
       refine h₀ n ?_
@@ -2038,8 +2019,6 @@ lemma imo_2023_p4_3_19
       = (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹) ^ (1/(2:ℝ)) := by
         rw [← rpow_mul g₁₂ (2:ℝ) (4:ℝ)⁻¹]
         norm_num
-  -- rw [g₂, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => x x_1)]
-  -- rw [g₃, ← sqrt_eq_rpow (Finset.sum (Finset.Ico 1 (1 + n)) fun x_1 => (x x_1)⁻¹)]
   have g₄: a (n) = sqrt ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k)
             * Finset.sum (Finset.Ico 1 (n + 1)) fun k => 1 / x k) := by
         refine h₀ n ?_
@@ -2462,13 +2441,7 @@ lemma imo_2023_p4_3_29
 
 
 
-
-
-
-
-
 lemma imo_2023_p4_4
---  my_3
   (x a: ℕ → ℝ)
   (hxp: ∀ (i : ℕ), 0 < x i)
   (hx: ∀ (i j : ℕ), i ≠ j → x i ≠ x j)
@@ -4343,12 +4316,6 @@ lemma imo_2023_p4_4_38
   exact LT.lt.le (hxp i)
 
 
-
-
-
-
-
-
 lemma imo_2023_p4_5
   (x : ℕ → ℝ)
   (a : ℕ → ℝ)
@@ -5518,11 +5485,6 @@ lemma imo_2023_p4_5_34
   3034 ≤ a 2023 := by
   rw [h₄]
   exact h₃ (1010) (by norm_num)
-
-
-
-
-
 
 
 

@@ -4,7 +4,6 @@ set_option linter.unusedVariables.analyzeTactics true
 open Nat
 
 
---  mylem_1
 lemma imo_2022_p5_1
   (b p: ℕ)
   (h₀: 0 < b)
@@ -447,7 +446,7 @@ lemma imo_2022_p5_4_2
 
 lemma imo_2022_p5_5
   (p: ℕ) :
-  (Finset.Ico p (2 * p - 1)).prod (fun x => x + 1) -- (λ (x : ℕ), x + 1)
+  (Finset.Ico p (2 * p - 1)).prod (fun x => x + 1)
     = (Finset.range (p - 1)).prod (fun x => p + (x + 1)) := by
   rw [Finset.prod_Ico_eq_prod_range _ (p) (2 * p - 1)]
   have h₀: 2 * p - 1 - p = p - 1 := by omega
@@ -1691,13 +1690,7 @@ lemma imo_2022_p5_7_33
   exact h₅
 
 
-
-
-
-
-
 lemma imo_2022_p5_8
---  mylem_4
   (a b p: ℕ)
   (h₀: 0 < a ∧ 0 < b)
   (hp: Nat.Prime p)
@@ -2528,12 +2521,7 @@ lemma imo_2022_p5_8_27
   linarith
 
 
-
-
-
-
 lemma imo_2022_p5_9
---  mylem_53
   (p: ℕ)
   -- (hp: Nat.Prime p)
   (hp5: 5 ≤ p) :
@@ -2573,9 +2561,6 @@ lemma imo_2022_p5_9
     rw [mul_assoc]
     refine dvd_mul_of_dvd_left ?_ ((-1:ℤ) ^ (p - x) * ↑(p.choose x))
     refine pow_dvd_pow ((↑p:ℤ) + 1) gx
-    -- refine Nat.le_induction _ _ x (gx),
-    -- { rw mul_assoc, exact dvd_mul_right ((↑p + 1) ^ 2) ((-1) ^ (p - 2) * ↑(p.choose 2)), },
-    -- { sorry }
   rw [h₂] at h₁
   rw [← add_zero ((↑p:ℤ) ^ p)] at h₁
   exact Int.ModEq.add_right_cancel h₃ h₁
@@ -2943,7 +2928,6 @@ lemma imo_2022_p5_9_19
 
 
 lemma imo_2022_p5_10
---  mylem_52
   (p: ℕ)
   (hp: Nat.Prime p)
   (hp5: 5 ≤ p)
@@ -2987,7 +2971,7 @@ lemma imo_2022_p5_10
     rw [← sub_eq_add_neg] at h₁
     norm_cast
     norm_cast at h₁
-  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by -- rw Nat.sub.right_comm,  rw Nat.sub_add_comm,
+  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by
     rw [Nat.sub_sub, mul_add]
     simp
     rw [← pow_two]
@@ -3073,7 +3057,7 @@ lemma imo_2022_p5_10_2
     rw [← sub_eq_add_neg] at h₁
     norm_cast
     norm_cast at h₁
-  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by -- rw Nat.sub.right_comm,  rw Nat.sub_add_comm,
+  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by
     rw [Nat.sub_sub, mul_add]
     simp
     rw [← pow_two]
@@ -3216,7 +3200,6 @@ lemma imo_2022_p5_10_6
   have g₂: (-1:ℤ) ^ (p) = -1 := by exact Odd.neg_one_pow gpo
   rw [g₁,g₂] at h₁
   simp at h₁
-  -- norm_cast at h₁
   have h₂: (p ^ p - p) ≡ (p * (p + 1)) - 1 - p [MOD ((p + 1) ^ 2)] := by
     refine Int.natCast_modEq_iff.mp ?_
     have g₃: p ≤ p^p := by
@@ -3286,7 +3269,6 @@ lemma imo_2022_p5_10_7
   False := by
   rw [g₁,g₂] at h₁
   simp at h₁
-  -- norm_cast at h₁
   have h₂: (p ^ p - p) ≡ (p * (p + 1)) - 1 - p [MOD ((p + 1) ^ 2)] := by
     refine Int.natCast_modEq_iff.mp ?_
     have g₃: p ≤ p^p := by
@@ -3308,7 +3290,7 @@ lemma imo_2022_p5_10_7
     rw [← sub_eq_add_neg] at h₁
     norm_cast
     norm_cast at h₁
-  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by -- rw Nat.sub.right_comm,  rw Nat.sub_add_comm,
+  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by
     rw [Nat.sub_sub, mul_add]
     simp
     rw [← pow_two]
@@ -3695,7 +3677,7 @@ lemma imo_2022_p5_10_20
   -- (h₁ : ↑p ^ p - ↑p ≡ ↑p * (↑p + 1) + -1 - ↑p [ZMOD (↑p + 1) ^ 2])
   (h₂ : p ^ p - p ≡ p * (p + 1) - 1 - p [MOD (p + 1) ^ 2]) :
   False := by
-  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by -- rw Nat.sub.right_comm,  rw Nat.sub_add_comm,
+  have h₃: p * (p + 1) - 1 - p = p^2 - 1 := by
     rw [Nat.sub_sub, mul_add]
     simp
     rw [← pow_two]
@@ -4040,12 +4022,10 @@ lemma imo_2022_p5_10_34
 
 
 lemma imo_2022_p5_11
---  mylem_51
   (p: ℕ)
   -- (hp: Nat.Prime p)
   (hpl: 5 ≤ p) :
   (p + p.factorial < p ^ p) := by
-  -- apply Nat.case_strong_induction_on p,
   -- induction p using Nat.case_strong_induction_on with n ih,
   refine Nat.le_induction ?_ ?_ p (hpl)
   . exact Nat.lt_of_sub_eq_succ rfl
@@ -4056,9 +4036,6 @@ lemma imo_2022_p5_11
       rw [mul_comm (n + 1)]
     rw [h₂, pow_add, pow_one ]
     refine Nat.mul_lt_mul_of_pos_right ?_ (by linarith)
-    -- have h₃: n.factorial + 1 < n.factorial + n := by
-    --   exact Nat.add_lt_add_left (by linarith) (n.factorial)
-    -- have h₄: n + n.factorial < n^n := by exact h₁
     have h₅: n ^ n < (n + 1) ^ n := by
       refine Nat.pow_lt_pow_left ?_ ?_
       . exact lt_add_one n
@@ -4079,9 +4056,6 @@ lemma imo_2022_p5_11_1 :
     rw [mul_comm (n + 1)]
   rw [h₂, pow_add, pow_one ]
   refine Nat.mul_lt_mul_of_pos_right ?_ (by linarith)
-  -- have h₃: n.factorial + 1 < n.factorial + n := by
-  --   exact Nat.add_lt_add_left (by linarith) (n.factorial)
-  -- have h₄: n + n.factorial < n^n := by exact h₁
   have h₅: n ^ n < (n + 1) ^ n := by
     refine Nat.pow_lt_pow_left ?_ ?_
     . exact lt_add_one n
@@ -4103,7 +4077,6 @@ lemma imo_2022_p5_11_2
     rw [mul_comm (n + 1)]
   rw [h₂, pow_add, pow_one ]
   refine Nat.mul_lt_mul_of_pos_right ?_ (by linarith)
-  -- have h₄: n + n.factorial < n^n := by exact h₁
   have h₅: n ^ n < (n + 1) ^ n := by
     refine Nat.pow_lt_pow_left ?_ ?_
     . exact lt_add_one n
@@ -4134,7 +4107,6 @@ lemma imo_2022_p5_11_4
   n + 1 + (n + 1)! < (n + 1) ^ (n + 1) := by
   rw [h₂, pow_add, pow_one ]
   refine Nat.mul_lt_mul_of_pos_right ?_ (by linarith)
-  -- have h₄: n + n.factorial < n^n := by exact h₁
   have h₅: n ^ n < (n + 1) ^ n := by
     refine Nat.pow_lt_pow_left ?_ ?_
     . exact lt_add_one n
@@ -4151,7 +4123,6 @@ lemma imo_2022_p5_11_5
   (h₁ : n + n ! < n ^ n) :
   -- (h₂ : n + 1 + (n + 1)! = (n ! + 1) * (n + 1)) :
   n ! + 1 < (n + 1) ^ n := by
-  -- have h₄: n + n.factorial < n^n := by exact h₁
   have h₅: n ^ n < (n + 1) ^ n := by
     refine Nat.pow_lt_pow_left ?_ ?_
     . exact lt_add_one n
@@ -4227,7 +4198,8 @@ lemma imo_2022_p5_12
           refine Nat.div_le_div_right ?_
           linarith
         norm_num at gg₃
-        have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+        have gg₄: 2 + (p+1)/2 ≤ p := by
+          -- strong induction
           refine Nat.le_induction ?_ ?_ p (hp5)
           . norm_num
           . intros n _ h₂
@@ -4336,7 +4308,8 @@ lemma imo_2022_p5_12_4
         refine Nat.div_le_div_right ?_
         linarith
       norm_num at gg₃
-      have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+      have gg₄: 2 + (p+1)/2 ≤ p := by
+        -- strong induction
         refine Nat.le_induction ?_ ?_ p (hp5)
         . norm_num
         . intros n _ h₂
@@ -4404,7 +4377,8 @@ lemma imo_2022_p5_12_5
       refine Nat.div_le_div_right ?_
       linarith
     norm_num at gg₃
-    have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+    have gg₄: 2 + (p+1)/2 ≤ p := by
+      -- strong induction
       refine Nat.le_induction ?_ ?_ p (hp5)
       . norm_num
       . intros n _ h₂
@@ -4469,7 +4443,8 @@ lemma imo_2022_p5_12_6
       refine Nat.div_le_div_right ?_
       linarith
     norm_num at gg₃
-    have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+    have gg₄: 2 + (p+1)/2 ≤ p := by
+      -- strong induction
       refine Nat.le_induction ?_ ?_ p (hp5)
       . norm_num
       . intros n _ h₂
@@ -4545,7 +4520,8 @@ lemma imo_2022_p5_12_8
       refine Nat.div_le_div_right ?_
       linarith
     norm_num at gg₃
-    have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+    have gg₄: 2 + (p+1)/2 ≤ p := by
+      -- strong induction
       refine Nat.le_induction ?_ ?_ p (hp5)
       . norm_num
       . intros n _ h₂
@@ -4602,7 +4578,8 @@ lemma imo_2022_p5_12_9
     refine Nat.div_le_div_right ?_
     linarith
   norm_num at gg₃
-  have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+  have gg₄: 2 + (p+1)/2 ≤ p := by
+    -- strong induction
     refine Nat.le_induction ?_ ?_ p (hp5)
     . norm_num
     . intros n _ h₂
@@ -4654,7 +4631,8 @@ lemma imo_2022_p5_12_10
     refine Nat.div_le_div_right ?_
     linarith
   norm_num at gg₃
-  have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+  have gg₄: 2 + (p+1)/2 ≤ p := by
+    -- strong induction
     refine Nat.le_induction ?_ ?_ p (hp5)
     . norm_num
     . intros n _ h₂
@@ -4706,7 +4684,8 @@ lemma imo_2022_p5_12_11
     refine Nat.div_le_div_right ?_
     linarith
   norm_num at gg₃
-  have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+  have gg₄: 2 + (p+1)/2 ≤ p := by
+    -- strong induction
     refine Nat.le_induction ?_ ?_ p (hp5)
     . norm_num
     . intros n _ h₂
@@ -4754,8 +4733,8 @@ lemma imo_2022_p5_12_12
   (gg₂ : (p + 1)! = p ! * (p + 1))
   (gg₃ : 3 ≤ (p + 1) / 2) :
   2 * ((p + 1) / 2) * (p + 1) ∣ b ! := by
-  -- norm_num at gg₃
-  have gg₄: 2 + (p+1)/2 ≤ p := by -- strong induction
+  have gg₄: 2 + (p+1)/2 ≤ p := by
+    -- strong induction
     refine Nat.le_induction ?_ ?_ p (hp5)
     . norm_num
     . intros n _ h₂
@@ -5259,14 +5238,7 @@ lemma imo_2022_p5_12_32
   exact imo_2022_p5_10 p hp hp5 h₂
 
 
-
-
-
-
-
-
 lemma imo_2022_p5_13
---  mylem_6
   (a b p: ℕ)
   (hp: Nat.Prime p)
   (h₂: p ∣ a)
@@ -5619,7 +5591,6 @@ lemma imo_2022_p5_14_1
   simp at h₁
   have h₅: 2 ≤ p := by exact Nat.Prime.two_le hp
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -5651,7 +5622,6 @@ lemma imo_2022_p5_14_2
   simp at h₁
   have h₅: 2 ≤ p := by exact Nat.Prime.two_le hp
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -5694,8 +5664,7 @@ lemma imo_2022_p5_14_4
   simp at h₁
   have h₅: 2 ≤ p := by exact Nat.Prime.two_le hp
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
-  have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
+  have h₇: 1 + 2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
 
@@ -5816,7 +5785,6 @@ lemma imo_2022_p5_14_10
   simp at h₁
   have h₅: 2 ≤ p := by exact Nat.Prime.two_le hp
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -5836,7 +5804,6 @@ lemma imo_2022_p5_14_11
   False := by
   have h₅: 2 ≤ p := by exact Nat.Prime.two_le hp
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -5856,7 +5823,6 @@ lemma imo_2022_p5_14_12
   (h₅ : 2 ≤ p) :
   False := by
   have g₆: 0 < b.factorial := by exact Nat.factorial_pos b
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -5876,7 +5842,6 @@ lemma imo_2022_p5_14_13
   (h₅ : 2 ≤ p)
   (g₆ : 0 < b !) :
   False := by
-  -- have h₆: 1 ≤ b.factorial := by linarith[g₆]
   have h₇: 1+2 ≤ b.factorial + p := by exact Nat.add_le_add g₆ h₅
   rw [← h₁] at h₇
   linarith
@@ -6158,9 +6123,9 @@ lemma imo_2022_p5_15
   (h₁ : a ^ p = b ! + p)
   (hbp : p ≤ b) :
   (a, b, p) = (2, 2, 2) ∨ (a, b, p) = (3, 4, 3) := by
-  have h₂: p ∣ a := by exact imo_2022_p5_3 a b p hp h₁ hbp -- mylem_3
+  have h₂: p ∣ a := by exact imo_2022_p5_3 a b p hp h₁ hbp
   by_cases hb2p: b < 2*p
-  . have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p  -- mylem_4
+  . have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p
     rw [h₃] at h₁
     by_cases hp5: p < 5
     . have h₄: 2 ≤ p := by exact Prime.two_le hp
@@ -6187,11 +6152,12 @@ lemma imo_2022_p5_15
       . exfalso
         contradiction
     . push_neg at hp5
-      exfalso -- lifting the exponent
-      exact imo_2022_p5_12 b p hp hbp h₁ hp5  -- mylem_5
+      exfalso
+      -- lifting the exponent
+      exact imo_2022_p5_12 b p hp hbp h₁ hp5
   . push_neg at hb2p
     exfalso
-    have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p -- mylem_6
+    have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p
     have g₃: b.factorial ≤ a^p := by exact le.intro (h₁.symm)
     have g₄: a^p - b.factorial = p := by
       rw [add_comm] at h₁
@@ -6215,7 +6181,7 @@ lemma imo_2022_p5_15_1
   (h₂ : p ∣ a) :
   (a, b, p) = (2, 2, 2) ∨ (a, b, p) = (3, 4, 3) := by
   by_cases hb2p: b < 2*p
-  . have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p  -- mylem_4
+  . have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p
     rw [h₃] at h₁
     by_cases hp5: p < 5
     . have h₄: 2 ≤ p := by exact Prime.two_le hp
@@ -6242,11 +6208,12 @@ lemma imo_2022_p5_15_1
       . exfalso
         contradiction
     . push_neg at hp5
-      exfalso -- lifting the exponent
-      exact imo_2022_p5_12 b p hp hbp h₁ hp5  -- mylem_5
+      exfalso
+      -- lifting the exponent
+      exact imo_2022_p5_12 b p hp hbp h₁ hp5
   . push_neg at hb2p
     exfalso
-    have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p -- mylem_6
+    have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p
     have g₃: b.factorial ≤ a^p := by exact le.intro (h₁.symm)
     have g₄: a^p - b.factorial = p := by
       rw [add_comm] at h₁
@@ -6270,7 +6237,7 @@ lemma imo_2022_p5_15_2
   (h₂ : p ∣ a)
   (hb2p : b < 2 * p) :
   (a, b, p) = (2, 2, 2) ∨ (a, b, p) = (3, 4, 3) := by
-  have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p  -- mylem_4
+  have h₃: a = p := by exact imo_2022_p5_8 a b p h₀ hp h₁ hbp h₂ hb2p
   rw [h₃] at h₁
   by_cases hp5: p < 5
   . have h₄: 2 ≤ p := by exact Prime.two_le hp
@@ -6297,8 +6264,9 @@ lemma imo_2022_p5_15_2
     . exfalso
       contradiction
   . push_neg at hp5
-    exfalso -- lifting the exponent
-    exact imo_2022_p5_12 b p hp hbp h₁ hp5  -- mylem_5
+    exfalso
+    -- lifting the exponent
+    exact imo_2022_p5_12 b p hp hbp h₁ hp5
 
 
 lemma imo_2022_p5_15_3
@@ -6337,8 +6305,9 @@ lemma imo_2022_p5_15_3
     . exfalso
       contradiction
   . push_neg at hp5
-    exfalso -- lifting the exponent
-    exact imo_2022_p5_12 b p hp hbp h₁ hp5  -- mylem_5
+    exfalso
+    -- lifting the exponent
+    exact imo_2022_p5_12 b p hp hbp h₁ hp5
 
 
 lemma imo_2022_p5_15_4
@@ -6573,8 +6542,9 @@ lemma imo_2022_p5_15_13
   -- (h₃ : a = p)
   (hp5 : 5 ≤ p) :
   (a, b, p) = (2, 2, 2) ∨ (a, b, p) = (3, 4, 3) := by
-  exfalso -- lifting the exponent
-  exact imo_2022_p5_12 b p hp hbp h₁ hp5  -- mylem_5
+  exfalso
+  -- lifting the exponent
+  exact imo_2022_p5_12 b p hp hbp h₁ hp5
 
 
 lemma imo_2022_p5_15_14
@@ -6587,7 +6557,7 @@ lemma imo_2022_p5_15_14
   (hb2p : 2 * p ≤ b) :
   (a, b, p) = (2, 2, 2) ∨ (a, b, p) = (3, 4, 3) := by
   exfalso
-  have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p -- mylem_6
+  have h₃: p^2 ∣ a^p - b.factorial := by exact imo_2022_p5_13 a b p hp h₂ hb2p
   have g₃: b.factorial ≤ a^p := by exact le.intro (h₁.symm)
   have g₄: a^p - b.factorial = p := by
     rw [add_comm] at h₁

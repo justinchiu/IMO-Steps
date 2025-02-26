@@ -1149,7 +1149,6 @@ lemma imo_1984_p6_10_8_4
   . linarith
 
 
-
 lemma imo_1984_p6_11
   (a b c d k m : ℕ)
   (h₀ : 0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < d)
@@ -1258,7 +1257,6 @@ lemma imo_1984_p6_11_1
   -- (h₈ : b + a = 2 ^ (m - 1))
   3 ≤ b := by
   by_contra! hc
-  -- contrapose! h₁
   interval_cases b
   . linarith
   . linarith [h₀.1, h₂.1]
@@ -1349,7 +1347,6 @@ lemma imo_1984_p6_11_5
   (h₆ : 2 ^ (m * 2 - 1) - (a * 2 ^ m + a * 2 ^ k) = 2 ^ (m * 2 - 2) - a * 2 ^ m) :
   2 ^ (m * 2 - 1) = 2 ^ (m * 2 - 2) - a * 2 ^ m + (a * 2 ^ m + a * 2 ^ k) := by
   refine Nat.eq_add_of_sub_eq ?_ h₆
-  -- rw [← Nat.mul_add]
   by_contra! hc
   have g₁: 2 ^ (m * 2 - 1) - (a * 2 ^ m + a * 2 ^ k) = 0 := by
     exact Nat.sub_eq_zero_of_le (le_of_lt hc)

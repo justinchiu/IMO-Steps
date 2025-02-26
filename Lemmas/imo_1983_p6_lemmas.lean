@@ -234,7 +234,6 @@ lemma imo_1983_p6_2_6
 
 
 
--- mylemma_cba
 lemma imo_1983_p6_3
   (a b c : ℝ)
   (hap : 0 < a )
@@ -371,7 +370,6 @@ lemma imo_1983_p6_3_4
 
 
 
--- mylemma_cba_tight
 lemma imo_1983_p6_4
   (a b c : ℝ)
   (hap : 0 < a )
@@ -614,10 +612,6 @@ lemma imo_1983_p6_4_8
   . exact { left := g₂, right := g₃ }
 
 
-
-
-
-
 lemma imo_1983_p6_5_1
   (a b c : ℝ)
   (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
@@ -681,7 +675,6 @@ lemma imo_1983_p6_5_4
   linarith
 
 
-
 lemma imo_1983_p6_5_5
   (a b c : ℝ)
   (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
@@ -694,7 +687,6 @@ lemma imo_1983_p6_5_5
   0 ≤ a ^ 2 * b * (a - b) + b ^ 2 * c * (b - c) + c ^ 2 * a * (c - a) := by
   rw [add_comm] at h₃
   exact imo_1983_p6_4 a c b h₀.1 h₀.2.2 h₀.2.1 h₂ h₃ ho₂ (le_of_lt ho₁)
-
 
 
 lemma imo_1983_p6_5_6
@@ -793,9 +785,6 @@ lemma imo_1983_p6_5_9
     exact imo_1983_p6_4 a c b h₀.1 h₀.2.2 h₀.2.1 h₂ h₃ ho₂ (le_of_lt ho₁)
 
 
-
-
--- show tight is tighter than the other
 lemma imo_1983_p6_6
   (a b c : ℝ)
   -- (hap : 0 < a )
@@ -814,7 +803,6 @@ lemma imo_1983_p6_6
     refine mul_nonneg ?_ (by linarith)
     linarith
   linarith
-
 
 
 -- give the tight as a hypothesis, use it to prove each of the 6 cases
@@ -1037,9 +1025,6 @@ lemma imo_1983_p6_8_3
   . constructor
     . exact ho₁
     . exact ho₀
-
-
-
 
 
 lemma mylemma_1x

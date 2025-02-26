@@ -431,7 +431,6 @@ lemma imo_1997_p5_6
     rw [g₅]
     symm
     norm_cast
-    -- repeat {rw [Nat.cast_pow]}
     have g₆: ((↑x:ℝ) / ↑y ^ 2) ^ y ^ 2 = ↑x ^ y ^ 2 / (↑y ^ 2) ^ y ^ 2 := by
       refine div_pow (↑x:ℝ) ((↑y:ℝ) ^ 2) (y^2)
     norm_cast at *
@@ -445,7 +444,6 @@ lemma imo_1997_p5_6_1
   -- (h₁ : x ^ y ^ 2 = y ^ x)
   -- (g₁ : ↑x ^ ↑y ^ 2 = ↑y ^ ↑x) :
   0 < ↑y ^ (2 * ↑y ^ 2) := by
-  -- norm_cast
   exact pow_pos h₀.2 _
 
 
@@ -474,7 +472,6 @@ lemma imo_1997_p5_6_2
     rw [g₅]
     symm
     norm_cast
-    -- repeat {rw [Nat.cast_pow]}
     have g₆: ((↑x:ℝ) / ↑y ^ 2) ^ y ^ 2 = ↑x ^ y ^ 2 / (↑y ^ 2) ^ y ^ 2 := by
       refine div_pow (↑x:ℝ) ((↑y:ℝ) ^ 2) (y^2)
     norm_cast at *
@@ -529,7 +526,6 @@ lemma imo_1997_p5_6_5
     rw [g₅]
     symm
     norm_cast
-    -- repeat {rw [Nat.cast_pow]}
     have g₆: ((↑x:ℝ) / ↑y ^ 2) ^ y ^ 2 = ↑x ^ y ^ 2 / (↑y ^ 2) ^ y ^ 2 := by
       refine div_pow (↑x:ℝ) ((↑y:ℝ) ^ 2) (y^2)
     norm_cast at *
@@ -553,7 +549,6 @@ lemma imo_1997_p5_6_6
   rw [g₅]
   symm
   norm_cast
-  -- repeat {rw [Nat.cast_pow]}
   have g₆: ((↑x:ℝ) / ↑y ^ 2) ^ y ^ 2 = ↑x ^ y ^ 2 / (↑y ^ 2) ^ y ^ 2 := by
     refine div_pow (↑x:ℝ) ((↑y:ℝ) ^ 2) (y^2)
   norm_cast at *
@@ -658,7 +653,7 @@ lemma imo_1997_p5_7
     have h₃: 1 < ↑x / (↑y:ℝ) ^ 2 := by
       refine (one_lt_div ?_).mpr h₂
       norm_cast
-      exact pow_pos h₀.2 2  -- rw ← one_mul ((↑y:ℝ)^2) at h₂, refine lt_div_iff_mul_lt.mpr h₂, },
+      exact pow_pos h₀.2 2
     have h₄: 1 < (↑x / (↑y:ℝ)^2)^(y^2) := by
       refine one_lt_pow₀ h₃ ?_
       refine Nat.ne_of_gt ?_
@@ -781,7 +776,7 @@ lemma imo_1997_p5_7_5
   have h₃: 1 < ↑x / (↑y:ℝ) ^ 2 := by
     refine (one_lt_div ?_).mpr h₂
     norm_cast
-    exact pow_pos h₀.2 2  -- rw ← one_mul ((↑y:ℝ)^2) at h₂, refine lt_div_iff_mul_lt.mpr h₂, },
+    exact pow_pos h₀.2 2
   have h₄: 1 < (↑x / (↑y:ℝ)^2)^(y^2) := by
     refine one_lt_pow₀ h₃ ?_
     refine Nat.ne_of_gt ?_
@@ -1298,7 +1293,6 @@ lemma imo_1997_p5_8_9
     simp
     exact mul_comm 2 x
   rw [g₄]
-  -- exact nsmul_left_comm (Nat.factorization y) x 2
 
 
 lemma imo_1997_p5_8_10
@@ -1575,7 +1569,6 @@ lemma imo_1997_p5_9_4
   -- (h₂ : Real.log ↑x = Real.log ↑y * ↑x / ↑(y ^ 2:ℕ))
   (hxy : y < x)
   (h_exp : (↑x:ℝ) = (↑y:ℝ) ^ ((↑x:ℝ) / (↑y:ℝ) ^ 2)) :
-  -- ↑x = rexp (Real.log ↑y) ^ (↑x  / (↑y:ℝ) ^ 2)
   x = y ^ (x / y ^ 2) := by
   have h₃: (↑x:ℝ) / ((↑y:ℝ)^2) = (↑(x / y^2:ℕ)) := by
     norm_cast
@@ -1722,7 +1715,6 @@ lemma imo_1997_p5_9_11
         exact Real.log_pow x (y^2)
       rw [h41,h42] at h₃
       exact h₃
-    -- ring_nf at h₄
     have h₅: Real.log ↑x = Real.log ↑y * ↑x / (↑(y ^ (2:ℕ)):ℝ) := by
       by_contra! hc
       rw [mul_comm (Real.log ↑y) (↑x)] at hc
@@ -1752,7 +1744,6 @@ lemma imo_1997_p5_10_1
       exact Real.log_pow x (y^2)
     rw [h41,h42] at h₃
     exact h₃
-  -- ring_nf at h₄
   have h₅: Real.log ↑x = Real.log ↑y * ↑x / (↑(y ^ (2:ℕ)):ℝ) := by
     by_contra! hc
     rw [mul_comm (Real.log ↑y) (↑x)] at hc
@@ -1935,11 +1926,7 @@ lemma imo_1997_p5_10_11
   -- (h₄ : ↑(y ^ 2:ℕ) * Real.log ↑x = ↑x * Real.log ↑y)
   (h₅ : Real.log ↑x = Real.log ↑y * ↑x / ↑(y ^ 2:ℕ)) :
   x = y ^ (x / y ^ 2) := by
-  have h₆: x = y ^ (x / y ^ 2) := by
-    exact imo_1997_p5_9 x y h₀ h₁ h₅ hxy
-  exact h₆
-
-
+  exact imo_1997_p5_9 x y h₀ h₁ h₅ hxy
 
 
 lemma imo_1997_p5_11_1
@@ -1970,7 +1957,7 @@ lemma imo_1997_p5_11_2
       linarith
     . exfalso
       simp at *
-      linarith [hxy,h₃] --simp at h₃, rw h₃ at hxy, linarith[hxy], },
+      linarith [hxy,h₃]
   . push_neg at hk
     rw [← hk_def] at h₃
     have h₅: k = y^(k-2) := by

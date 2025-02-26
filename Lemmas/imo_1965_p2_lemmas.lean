@@ -480,7 +480,6 @@ lemma imo_1965_p2_13
       have g6: 0 < a 5 * z := by exact mul_pos_of_neg_of_neg h₂.2 hzn
       linarith
     . push_neg at hyp
-      -- have hyn: y < 0, {exact lt_of_le_of_ne hyp hy0,},
       have g1: 0 < a 6 * x := by exact mul_pos_of_neg_of_neg h₃.1 hxn
       have g2: 0 < a 7 * y := by exact mul_pos_of_neg_of_neg h₃.2 hyp
       have g3: z * a 8 < 0 := by linarith
@@ -641,7 +640,6 @@ lemma imo_1965_p2_14
       have g6: 0 < a 5 * z := by exact mul_pos_of_neg_of_neg h₂.2 hzn
       linarith
     . push_neg at hyp
-      -- have hyn: y < 0, {exact lt_of_le_of_ne hyp hy0,},
       have g1: 0 < a 6 * x := by exact mul_pos_of_neg_of_neg h₃.1 hxn
       have g2: 0 < a 7 * y := by exact mul_pos_of_neg_of_neg h₃.2 hyp
       have g3: z * a 8 < 0 := by linarith
@@ -2479,7 +2477,6 @@ lemma imo_1965_p2_61
   -- (g2 : 0 < a 7 * y)
   -- (g3 : z * a 8 < 0)
   (hzp : z < 0)
-  -- (rxy : x ≤ y)
   (ryz : z < y) :
   False := by
   by_cases rxz: x ≤ z

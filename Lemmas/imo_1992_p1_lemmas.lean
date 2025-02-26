@@ -4,7 +4,6 @@ set_option linter.unusedVariables.analyzeTactics true
 open Int Rat
 
 
--- my_main_lt2
 lemma imo_1992_p1_1
   (p q r: ℤ)
   (hpl: 4 ≤ p)
@@ -76,11 +75,7 @@ lemma imo_1992_p1_1
 
 lemma imo_1992_p1_1_1
   (p : ℤ)
-  -- (q r : ℤ)
   (hpl : 4 ≤ p) :
-  -- (hql : 5 ≤ q)
-  -- (hrl : 6 ≤ r)
-  -- (h₁ : ↑(p * q * r) / ↑((p - 1) * (q - 1) * (r - 1)) = ↑p / ↑(p - 1) * (↑q / ↑(q - 1)) * (↑r / ↑(r - 1))) :
   ↑p / ↑(p - 1) ≤ ((4/3):ℚ) := by
   have g₁: 0 < (↑(p - 1):ℚ) := by
     norm_cast
@@ -364,8 +359,6 @@ lemma imo_1992_p1_1_12
   exact hub
 
 
-
--- my_k_lt_2
 lemma imo_1992_p1_2
   (p q r k: ℤ)
   (hk: p * q * r - 1 = (p - 1) * (q - 1) * (r - 1) * k)
@@ -396,7 +389,6 @@ lemma imo_1992_p1_2
   have h₄: (↑k:ℚ) < ↑2 := by
     exact lt_of_lt_of_le h₃ h₁
   norm_cast at h₄
-
 
 
 lemma imo_1992_p1_2_1
@@ -507,8 +499,6 @@ lemma imo_1992_p1_2_5
   norm_cast at h₄
 
 
-
--- my_main_lt4
 lemma imo_1992_p1_3
   (p q r: ℤ)
   (hpl: 2 ≤ p)
@@ -732,9 +722,7 @@ lemma imo_1992_p1_3_8
   exact hub
 
 
-
 lemma imo_1992_p1_4
--- my_k_lt_4
   (p q r k: ℤ)
   (hk: p * q * r - 1 = (p - 1) * (q - 1) * (r - 1) * k)
   (hpl: 2 ≤ p)
@@ -782,8 +770,6 @@ lemma imo_1992_p1_4_1
   norm_cast at h₄
 
 
-
-
 lemma imo_1992_p1_5
   (p q r k: ℤ)
   (hk: p * q * r - 1 = (p - 1) * (q - 1) * (r - 1) * k)
@@ -809,7 +795,6 @@ lemma imo_1992_p1_5
   by_contra! hc
   interval_cases k
   simp at hk
-  -- exfalso
   have g₁: p*q + q*r + r*p = p+q+r := by linarith
   have g₂: p < p*q := by exact lt_mul_right (by linarith) (by linarith)
   have g₃: q < q*r := by exact lt_mul_right (by linarith) (by linarith)
@@ -956,12 +941,7 @@ lemma imo_1992_p1_5_7
   linarith [g₁,g₅]
 
 
-
-
-
-
 lemma imo_1992_p1_6
--- my_p_lt_4
   (p q r k: ℤ)
   (h₀ : 1 < p ∧ p < q ∧ q < r)
   (hk: p * q * r - 1 = (p - 1) * (q - 1) * (r - 1) * k)
@@ -997,8 +977,6 @@ lemma imo_1992_p1_6_1
   linarith
 
 
-
--- q_r_divisor_of_prime
 lemma imo_1992_p1_7
   (q r : ℤ)
   (p: ℕ)
@@ -1650,9 +1628,6 @@ lemma imo_1992_p1_8_8
   exact Lean.Omega.Int.le_lt_asymm h₃ h₁
 
 
-
-
--- my_case_k_3
 lemma imo_1992_p1_9
   (p q r: ℤ)
   (h₀: 1 < p ∧ p < q ∧ q < r)
@@ -1685,7 +1660,6 @@ lemma imo_1992_p1_9
           norm_num at g₂
           have hr: r = 4 := by linarith
           linarith[hrl,hr]
-  -- p = 3
   . right
     norm_num at *
     have g₂: (6 - 3*q) * (2 - r) = 5 := by linarith
@@ -1704,12 +1678,10 @@ lemma imo_1992_p1_9
 
 
 lemma imo_1992_p1_9_1
-  -- (p : ℤ)
   (q r : ℤ)
   (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3) :
   q = 4 ∧ r = 8 := by
   have g₂: (q - 3) * (r - 3) = 5 := by linarith
@@ -1736,14 +1708,10 @@ lemma imo_1992_p1_9_1
 
 
 lemma imo_1992_p1_9_2
-  -- (p : ℤ)
   (q r : ℤ)
   (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
-  -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
-  -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5) :
   q = 4 ∧ r = 8 := by
   have g₃: (q - 3) = -1 ∨ (q - 3) = 1 ∨ (q - 3) = -5 ∨ (q - 3) = 5 := by
@@ -1768,14 +1736,7 @@ lemma imo_1992_p1_9_2
 
 
 lemma imo_1992_p1_9_3
-  -- (p : ℤ)
   (q r : ℤ)
-  -- (hql : 3 ≤ q)
-  -- (hrl : 4 ≤ r)
-  -- (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
-  -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
-  -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5) :
   q - 3 = -1 ∨ q - 3 = 1 ∨ q - 3 = -5 ∨ q - 3 = 5 := by
   refine imo_1992_p1_7 (q - 3) (r - 3) 5 g₂ ?_
@@ -1788,7 +1749,6 @@ lemma imo_1992_p1_9_4
   (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5)
@@ -1818,7 +1778,6 @@ lemma imo_1992_p1_9_5
   (hql : 3 ≤ q)
   -- (hrl : 4 ≤ r)
   -- (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   -- (g₂ : (q - 3) * (r - 3) = 5)
@@ -1834,7 +1793,6 @@ lemma imo_1992_p1_9_6
   (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   -- (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   -- (g₂ : (q - 3) * (r - 3) = 5)
@@ -1854,7 +1812,6 @@ lemma imo_1992_p1_9_7
   (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5)
@@ -1881,7 +1838,6 @@ lemma imo_1992_p1_9_8
   -- (hql : 3 ≤ q)
   -- (hrl : 4 ≤ r)
   -- (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5)
@@ -1899,7 +1855,6 @@ lemma imo_1992_p1_9_9
   -- (hql : 3 ≤ q)
   -- (hrl : 4 ≤ r)
   -- (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5)
@@ -1937,7 +1892,6 @@ lemma imo_1992_p1_9_11
   -- (hql : 3 ≤ q)
   (hrl : 4 ≤ r)
   (h₀ : 2 < q ∧ q < r)
-  -- (hpl hpu : True)
   -- (hk : 2 * q * r - 1 = (q - 1) * (r - 1) * 3)
   -- (g₁ : q * r - 3 * q - 3 * r + 4 = 0)
   (g₂ : (q - 3) * (r - 3) = 5)
@@ -1956,7 +1910,6 @@ lemma imo_1992_p1_9_12
   -- (hql : 3 ≤ q)
   -- (hrl : 4 ≤ r)
   (h₀ : 3 < q ∧ q < r)
-  -- (hpl hpu : True)
   (hk : 3 * q * r - 1 = 2 * (q - 1) * (r - 1) * 3) :
   q = 5 ∧ r = 15 := by
   have g₂: (6 - 3*q) * (2 - r) = 5 := by linarith
@@ -2028,9 +1981,6 @@ lemma imo_1992_p1_9_15
     . cases' g₃₃ with g₃₃ g₃₄
       . linarith[g₃₃,q]
       . linarith[g₃₄,q]
-
-
-
 
 
 lemma q_of_qr_eq_11_nat
@@ -2129,70 +2079,3 @@ lemma imo_1992_p1_19_3
   interval_cases k
   . exact imo_1992_p1_8 p q r h₀ hpl hql hrl hpu hk
   . exact imo_1992_p1_9 p q r h₀ hpl hql hrl hpu hk
-
-
-
-
-
-
-
--- lemma q_divisor_of_11
---   (q r : ℤ)
---   (h₀ : q * r = 11) :
---   q = -1 ∨ q = 1 ∨ q = -11 ∨ q = 11 := by
---   have h₁: Nat.Prime (11:ℕ) := by exact my_prime11
---   have hq : q ≠ 0 := by
---     intro h
---     rw [h] at h₀
---     simp at h₀
---   have hr : r ≠ 0 := by
---     intro h
---     rw [h] at h₀
---     simp at h₀
---   have hqr : abs q * abs r = 11 := by
---     exact abs_q_r_product_2 q r h₀
---   have : abs (↑(q.natAbs):ℤ)  = 1 ∨ abs q = 11 := by
---     cases' Int.natAbs_eq q with h_1 h_2
---     . rw [h_1] at hqr
---       have h₂: abs (↑(q.natAbs):ℤ) ∣ 11 := by exact Dvd.intro (abs r) hqr
---       have h₃: (↑(q.natAbs):ℕ) ∣ 11 := by norm_cast at *
---       have h₄: (↑(q.natAbs):ℕ) = 1 ∨ (↑(q.natAbs):ℕ) = 11 := by
---         exact Nat.Prime.eq_one_or_self_of_dvd h₁ (↑(q.natAbs):ℕ) h₃
---       cases' h₄ with h₄₀ h₄₁
---       . left
---         norm_cast at *
---       have h₅: abs q = q.natAbs := by exact abs_eq_natAbs q
---       right
---       rw [h₅]
---       norm_cast at *
---     . rw [h_2] at hqr
---       rw [abs_neg _] at hqr
---       have h₂: abs (↑(q.natAbs):ℤ) ∣ 11 := by exact Dvd.intro (abs r) hqr
---       have h₃: (↑(q.natAbs):ℕ) ∣ 11 := by norm_cast at *
---       have h₄: (↑(q.natAbs):ℕ) = 1 ∨ (↑(q.natAbs):ℕ) = 11 := by
---         exact Nat.Prime.eq_one_or_self_of_dvd h₁ (↑(q.natAbs):ℕ) h₃
---       cases' h₄ with h₄₀ h₄₁
---       . left
---         norm_cast at *
---       have h₅: abs q = q.natAbs := by exact abs_eq_natAbs q
---       right
---       rw [h₅]
---       norm_cast at *
---   cases' this with hq_abs hq_abs
---   . norm_cast at *
---     have h₄: q = ↑(q.natAbs) ∨ q = -↑(q.natAbs) := by
---       exact Int.natAbs_eq q
---     rw [hq_abs] at h₄
---     norm_cast at h₄
---     cases' h₄ with h₄₀ h₄₁
---     . right
---       left
---       exact h₄₀
---     . left
---       exact h₄₁
---   . right
---     right
---     have h₂: abs q = q.natAbs := by exact abs_eq_natAbs q
---     rw [h₂] at hq_abs
---     norm_cast at hq_abs
---     exact (Int.natAbs_eq_natAbs_iff).mp hq_abs

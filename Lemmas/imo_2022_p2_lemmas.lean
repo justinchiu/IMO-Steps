@@ -504,7 +504,7 @@ lemma imo_2022_p2_simp_3_5
     rw [hz, mul_add, add_sq]
     ring_nf
     repeat rw [add_assoc]
-    refine add_le_add_left ?_ (x * √d₁ * 2) --(x * Real.sqrt (x ^ 2 - g x) * 2)
+    refine add_le_add_left ?_ (x * √d₁ * 2)
     rw [sq_sqrt]
     simp
     linarith
@@ -662,11 +662,6 @@ lemma imo_2022_p2_simp_3_11
   exact h₂ z hzp
 
 
-
-
-
-
-
 lemma imo_2022_p2_simp_4
   (g : ℝ → ℝ)
   -- (h₀ : ∀ (x : ℝ), 0 < x → ∃ y, 0 < y ∧ g x + g y ≤ 2 * x * y
@@ -679,8 +674,6 @@ lemma imo_2022_p2_simp_4
   have g₂: g x ≤ x ^ 2 := by exact h₂ x hxp
   have g₃: ¬ g x < x ^ 2 := by exact h₃ x hxp
   linarith
-
-
 
 
 
@@ -1013,8 +1006,6 @@ lemma imo_2022_p2_1_12
   rw [← sub_sq']
   refine sq_pos_of_ne_zero ?_
   exact sub_ne_zero.mpr hc.symm
-
-
 
 
 
