@@ -31,13 +31,12 @@ The figure demonstrates that the SOTA LLMs tend to write shorter proofs, which i
 The dataset, motivations and additional results are available [here](https://openreview.net/forum?id=CrKMqRAhBo)
 ```
 @article{
-anonymous2024a,
+yousefzadeh2025a,
 title={A Lean Dataset for International Math Olympiad: Small Steps towards Writing Math Proofs for Hard Problems},
-author={Anonymous},
-journal={Submitted to Transactions on Machine Learning Research},
-year={2024},
-url={https://openreview.net/forum?id=CrKMqRAhBo},
-note={Under review}
+author={Roozbeh Yousefzadeh and Xuenan Cao and Azim Ospanov},
+journal={Transactions on Machine Learning Research},
+year={2025},
+url={https://openreview.net/forum?id=CrKMqRAhBo}
 }
 ```
 ## Versioning
