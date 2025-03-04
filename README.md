@@ -7,6 +7,33 @@ The purpose of the dataset is to expose current theorem provers' ability in solv
 
 The dataset is released under MIT license. Contributions are welcome through pull requests.
 
+IMO problems formalized in this paper are as follows:
+
+| \#    | Year | Problem | Topic         | in miniF2F | Lean proof publicly available | \# of lines of Lean4 code |
+|-------|------|---------|---------------|------------|-------------------------------|---------------------------|
+| 1     | 1959 | P1      | number theory | Yes        | Yes                           | 9                         |
+| 2     | 1960 | P2      | algebra       | Yes        | Yes                           | 40                        |
+| 3     | 1962 | P2      | algebra       | Yes        | No                            | 60                        |
+| 4     | 1963 | P5      | algebra       | Yes        | No                            | 50                        |
+| 5     | 1964 | P2      | algebra       | Yes        | Yes                           | 50                        |
+| 6     | 1965 | P2      | algebra       | Yes        | No                            | 210                       |
+| 7     | 1968 | P5      | algebra       | Yes        | No                            | 30                        |
+| 8     | 1969 | P2      | algebra       | Yes        | No                            | 150                       |
+| 9     | 1974 | P3      | number theory | Yes        | No                            | 510                       |
+| 10    | 1981 | P6      | algebra       | Yes        | No                            | 40                        |
+| 11    | 1982 | P1      | algebra       | Yes        | No                            | 75                        |
+| 12    | 1983 | P6      | algebra       | Yes        | No                            | 180                       |
+| 13    | 1984 | P6      | number theory | Yes        | No                            | 380                       |
+| 14    | 1985 | P6      | number theory | Yes        | No                            | 1,310                     |
+| 15    | 1992 | P1      | number theory | Yes        | No                            | 480                       |
+| 16    | 1997 | P5      | number theory | Yes        | No                            | 390                       |
+| 17    | 2007 | P6      | algebra       | Yes        | No                            | 570                       |
+| 18    | 2022 | P2      | algebra       | No         | No                            | 260                       |
+| 19    | 2022 | P5      | number theory | No         | No                            | 640                       |
+| 20    | 2023 | P4      | number theory | No         | No                            | 450                       |
+| total |      |         |               |            |                               | 5,884                     |
+
+
 ## Performance of SOTA LLMs on the Lemmas Dataset
 | Problem | # of lemmas | DeepSeek Prover-v1.5-RL (@32)             | Goedel-Prover (@32)                       | ReProver retrieval ✗     | ReProver retrieval ✓     | o3-mini (with 10 e.f.) |
 |:---------:|:--------------:|:-------------------------------------------:|:-------------------------------------------:|:-------------------------------:|:-------------------------------:|:-------------------------------:|
