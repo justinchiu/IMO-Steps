@@ -1,6 +1,8 @@
 # Lemmas Dataset
 Lemmas dataset is a benchmark that consists of building blocks for 13 IMO problems, and also the complete formal proofs for 20 IMO problems. The topics cover a variety of concepts ranging from divisibility to finite sets and functions. All proof steps are written in Lean 4. 
 
+All files compile with no error in Lean v4.17.0.
+
 The purpose of the dataset is to expose current theorem provers' ability in solving IMO problems and highlight their strengths and weaknesses.
 
 The dataset is released under MIT license. Contributions are welcome through pull requests.
