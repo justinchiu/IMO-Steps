@@ -1,8 +1,7 @@
 import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
--- https://artofproblemsolving.com/wiki/index.php/2023_IMO_Problems/Problem_4
--- https://web.evanchen.cc/exams/IMO-2023-notes.pdf
+
 set_option linter.unusedVariables.analyzeTactics true
 
 open Real Set
