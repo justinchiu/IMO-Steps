@@ -7,6 +7,8 @@ This dataset is also available on Hugging Face at https://huggingface.co/dataset
 
 The purpose of the dataset is to expose current theorem provers' ability in solving IMO problems and highlight their strengths and weaknesses.
 
+Paper is available at arxiv.org/abs/2411.18872. It is also published at TMLR: https://openreview.net/forum?id=CrKMqRAhBo.
+
 The dataset is released under MIT license. Contributions are welcome through pull requests.
 
 IMO problems formalized in this paper are as follows:
