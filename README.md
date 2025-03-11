@@ -24,7 +24,7 @@ IMO problems formalized in this paper are as follows:
 | 11    | 1982 | P1      | algebra       | Yes        | No                            | 75                        |
 | 12    | 1983 | P6      | algebra       | Yes        | No                            | 180                       |
 | 13    | 1984 | P6      | number theory | Yes        | No                            | 380                       |
-| 14    | 1985 | P6      | number theory | Yes        | No                            | 1,310                     |
+| 14    | 1985 | P6      | algebra       | Yes        | No                            | 1,310                     |
 | 15    | 1992 | P1      | number theory | Yes        | No                            | 480                       |
 | 16    | 1997 | P5      | number theory | Yes        | No                            | 390                       |
 | 17    | 2007 | P6      | algebra       | Yes        | No                            | 570                       |
