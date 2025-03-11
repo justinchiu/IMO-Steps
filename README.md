@@ -1,5 +1,5 @@
 # IMO-Steps Dataset
-Lemmas dataset is a benchmark that consists of building blocks for 13 IMO problems, and also the complete formal proofs for 20 IMO problems. The topics cover a variety of concepts ranging from divisibility to finite sets and functions. All proof steps are written in Lean 4. 
+This dataset is a benchmark that consists of building blocks for 13 IMO problems, and also the complete formal proofs for 20 IMO problems. The topics cover a variety of concepts ranging from divisibility to finite sets and functions. All proof steps are written in Lean 4. 
 
 All files compile with no error in Lean v4.17.0.
 
