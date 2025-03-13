@@ -1,5 +1,6 @@
 import Mathlib
 
+set_option linter.unusedVariables.analyzeTactics true
 
 lemma aux_1
   (f : ℕ → NNReal → ℝ)
@@ -1317,6 +1318,7 @@ lemma imo_1985_p6_nnreal
     exact aux_unique f h₁ hmo₀ h₇ x y hx₀ hy₀
 
 
+
 theorem imo_1985_p6
   (f : ℕ → ℝ → ℝ)
   (h₀ : ∀ x, f 1 x = x)
@@ -1324,7 +1326,7 @@ theorem imo_1985_p6
   ∃! a, ∀ n, 0 < n → 0 < f n a ∧ f n a < f (n + 1) a ∧ f (n + 1) a < 1 := by
   let fn : ℕ → NNReal → ℝ := fun n x => f n x
   have hfn₁: ∀ n x, 0 < n → 0 ≤ x → fn n x = f n x := by
-    exact fun n x a a ↦ rfl
+    exact fun n x _ _ ↦ rfl
   have h₂: ∃! a, ∀ (n : ℕ), 0 < n → 0 < fn n a ∧ fn n a < fn (n + 1) a ∧ fn (n + 1) a < 1 := by
     exact imo_1985_p6_nnreal fn (fun x ↦ h₀ ↑x) fun n x ↦ h₁ n ↑x
   obtain ⟨a, ha₀, ha₁⟩ := h₂
