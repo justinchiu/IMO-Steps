@@ -37,6 +37,27 @@ IMO problems formalized in this paper are as follows:
 | 20    | 2023 | P4      | number theory | No         | No                            | 450                       |
 | total |      |         |               |            |                               | 5,884                     |
 
+## LLM Evaluation using IMO-Steps Dataset
+
+This repository provides a Python script designed to convert .lean files into .jsonl format, making it easier for you to test and analyze your models.
+
+### What It Does
+
+Our tool extracts information such as headers, formal and informal statements from .lean files. The extracted data is saved as separate entries in a .jsonl file in order to integrate with tools like [Deepseek-Prover-V1.5](https://github.com/deepseek-ai/DeepSeek-Prover-V1.5) for comprehensive LLM evaluation.
+
+### How to Use
+
+Import the conversion function and call it with the path to your .lean file. Here's a quick example:
+```python
+from llm_evaluation.utils.lean_to_jsonl import lean_to_jsonl
+lean_to_jsonl('path/to/leanfile.lean', save_path='test.jsonl')
+```
+This script will extract lemmas from your file and store them as individual entities in the resulting .jsonl file, ensuring that your data is ready to be evaluated by your LLM evaluation tools.
+
+## What's Next?
+
+We’re currently working towards improving this repository. In the near future, you can expect a more comprehensive evaluation suite to enhance your workflow and test different LLMs with our dataset. Stay tuned for updates!
+
 
 ## Performance of SOTA LLMs on the Lemmas Dataset
 | Problem | # of lemmas | DeepSeek Prover-v1.5-RL (@32)             | Goedel-Prover (@32)                       | ReProver retrieval ✗     | ReProver retrieval ✓     | o3-mini (with 10 e.f.) |
