@@ -19,7 +19,6 @@ set_option pp.piBinderTypes true
 
 
 
-
 open Nat
 
 theorem imo_1977_p5_minif2f

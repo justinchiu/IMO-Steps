@@ -26,8 +26,6 @@ set_option pp.piBinderTypes true
 open Real Finset
 
 
-
-
 lemma aux_3
   (x a : ℕ → ℝ)
   (j k l : ℕ)
