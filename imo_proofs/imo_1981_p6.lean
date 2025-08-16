@@ -1,6 +1,5 @@
-import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
-
 
 open Nat
 
