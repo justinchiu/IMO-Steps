@@ -1,94 +1,8 @@
 import Mathlib
+import ImoSteps.Common
 set_option linter.unusedVariables.analyzeTactics true
 
 open Nat BigOperators Finset
-
-
-lemma aux_1
-  (a : ℕ) :
-  ¬ a ^ 2 ≡ 2 [MOD 5] := by
-  intro ha₀
-  induction' a with n hn
-  . simp at ha₀
-    have ha₁: ¬ 0 ≡ 2 [MOD 5] := by decide
-    exact ha₁ ha₀
-  . let b:ℕ := n % 5
-    have hb₀: b < 5 := by omega
-    have hb₁: n ≡ b [MOD 5] := by exact Nat.ModEq.symm (Nat.mod_modEq n 5)
-    have hb₂: (n + 1) ≡ (b + 1) [MOD 5] := by
-      exact Nat.ModEq.add_right 1 hb₁
-    have hb₃: (n + 1) ^ 2 ≡ (b + 1) ^ 2 [MOD 5] := by
-      exact Nat.ModEq.pow 2 hb₂
-    interval_cases b
-    . simp at *
-      have g₀: 1 ≡ 2 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 1 ≡ 2 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 4 ≡ 2 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 4 ≡ 2 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 9 ≡ 2 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 9 ≡ 2 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 16 ≡ 2 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 16 ≡ 2 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 25 ≡ 2 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 25 ≡ 2 [MOD 5] := by decide
-      exact g₁ g₀
-
-
-lemma aux_2
-  (a : ℕ) :
-  ¬ a ^ 2 ≡ 3 [MOD 5] := by
-  intro ha₀
-  induction' a with n hn
-  . simp at ha₀
-    have ha₁: ¬ 0 ≡ 3 [MOD 5] := by decide
-    exact ha₁ ha₀
-  . let b:ℕ := n % 5
-    have hb₀: b < 5 := by omega
-    have hb₁: n ≡ b [MOD 5] := by exact Nat.ModEq.symm (Nat.mod_modEq n 5)
-    have hb₂: (n + 1) ≡ (b + 1) [MOD 5] := by
-      exact Nat.ModEq.add_right 1 hb₁
-    have hb₃: (n + 1) ^ 2 ≡ (b + 1) ^ 2 [MOD 5] := by
-      exact Nat.ModEq.pow 2 hb₂
-    interval_cases b
-    . simp at *
-      have g₀: 1 ≡ 3 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 1 ≡ 3 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 4 ≡ 3 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 4 ≡ 3 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 9 ≡ 3 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 9 ≡ 3 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 16 ≡ 3 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 16 ≡ 3 [MOD 5] := by decide
-      exact g₁ g₀
-    . simp at hb₃
-      have g₀: 25 ≡ 3 [MOD 5] := by
-        refine Nat.ModEq.trans hb₃.symm ha₀
-      have g₁: ¬ 25 ≡ 3 [MOD 5] := by decide
-      exact g₁ g₀
-
 
 lemma aux_3
   (n : ℕ) :
@@ -500,7 +414,7 @@ theorem imo_1974_p3
       norm_num at hc₃
       have hc₄: 5 ≡ 0 [MOD 5] := by decide
       exact Nat.ModEq.add_left_cancel hc₄ hc₃
-    have hc₅: ¬ a ^ 2 ≡ 3 [MOD 5] := by exact aux_2 a
+    have hc₅: ¬ a ^ 2 ≡ 3 [MOD 5] := by exact (ImoSteps.Common.NumberTheory.not_sq_mod_5 a).right
     exact hc₅ hc₄
   . rw [h₃] at h₄₁
     have hc₂: b ^ 2 * 8 - a ^ 2 + a ^ 2 ≡ 3 + a ^ 2 [MOD 5] := by
@@ -510,5 +424,5 @@ theorem imo_1974_p3
     have hc₃: a ^ 2 ≡ 2 [MOD 5] := by
       refine Nat.ModEq.add_left_cancel'  3 ?_
       exact hc₁
-    have hc₄: ¬ a ^ 2 ≡ 2 [MOD 5] := by exact aux_1 a
+    have hc₄: ¬ a ^ 2 ≡ 2 [MOD 5] := by exact (ImoSteps.Common.NumberTheory.not_sq_mod_5 a).left
     exact hc₄ hc₃
