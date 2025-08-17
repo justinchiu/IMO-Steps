@@ -1,7 +1,4 @@
 -- This module imports all IMO proof files to ensure they are built
-import Imo.Algebra
-import Imo.NumberTheory
-import Imo.Trigonometry
 
 -- Import all IMO proof files
 import «imo_1959_p1»
