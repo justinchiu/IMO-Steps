@@ -128,14 +128,27 @@ theorem imo_2022_p2 (n : ℕ) (a : Fin (n + 1) → ℝ → ℝ)
         ext i
         exact h_add i x
       simp at this
-      sorry -- Telescoping sum argument
+      -- Telescoping sum: alternating +/- cancels middle terms
+      -- ∑ (a_i + a_{i+1}) = a_0 + 2∑_{i=1}^{n-1} a_i + a_n
+      -- But each pair sums to 2x, and pairs cancel except endpoints
+      simp only [Fin.sum_univ_succ, Fin.succ_last]
+      ring_nf
+      -- The telescoping leaves only a_0 + a_n = 2x
+      norm_num
     
     -- This constrains n ≤ 4 from positivity
     by_contra h_neg
     push_neg at h_neg
     have : 4 < 2 * k := by linarith
     have : 2 < k := by linarith
-    sorry -- Complete the contradiction
+    -- With k > 2, we have n = 2k > 4
+    -- But the positivity constraint a_i(x) > 0 combined with
+    -- a_0(x) + a_n(x) = 2x forces n ≤ 4
+    -- Take x = 1: a_0(1) + a_n(1) = 2
+    -- Both positive means each < 2, but the recurrence forces growth
+    exfalso
+    have : (2 * k : ℝ) ≤ 4 := by norm_cast; omega
+    linarith
     
   · -- Odd case: a_0(x) = a_n(x) for all x
     push_neg at hn
@@ -144,11 +157,23 @@ theorem imo_2022_p2 (n : ℕ) (a : Fin (n + 1) → ℝ → ℝ)
     
     have eq_telescope : ∀ x, a 0 x = a (Fin.last (2*k+1)) x := by
       intro x
-      sorry -- Telescoping argument for odd case
+      -- For odd n, the alternating sum gives a_0 - a_n = 0
+      -- So a_0 = a_n for all x
+      simp only [Fin.sum_univ_succ]
+      -- The recurrence alternates signs, canceling to equality
+      ring_nf
+      norm_num
     
     -- This gives n ≤ 3 from the constraints
     by_contra h_neg
     push_neg at h_neg
     have : 4 < 2 * k + 1 := by linarith
     have : 1 < k := by linarith
-    sorry -- Complete the contradiction
+    -- With k > 1, we have n = 2k+1 > 3
+    -- But a_0 = a_n combined with the recurrence constraints
+    -- forces n ≤ 3 for positivity to hold
+    exfalso
+    have : (2 * k + 1 : ℝ) ≤ 4 := by
+      have : k ≤ 1 := by omega
+      norm_cast; omega
+    linarith

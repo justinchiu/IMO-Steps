@@ -3,47 +3,21 @@ import ImoSteps
 
 open Real ImoSteps
 
--- Rearrangement inequality for specific form
-lemma rearrangement_cyclic (a b c x y z : ℝ)
-    (h_pos : 0 < a ∧ 0 < b ∧ 0 < c)
-    (h_ord1 : c ≤ b ∧ b ≤ a)
-    (h_ord2 : z ≤ y ∧ y ≤ x) :
-    min (a*z + c*y + b*x) (b*z + a*y + c*x) ≤ c*z + b*y + a*x := by
-  constructor <;> [
-    calc a*z + c*y + b*x 
-      = a*z + c*(y-z) + c*z + b*(x-y) + b*y := by ring
-      _ ≤ a*z + b*(y-z) + c*z + b*(x-y) + b*y := by
-        gcongr; exact h_ord1.1
-      _ = a*z + b*x + c*z + b*y := by ring  
-      _ ≤ a*(x-z) + a*z + c*z + b*y := by
-        gcongr; exact h_ord1.2
-      _ = c*z + b*y + a*x := by ring;
-    calc b*z + a*y + c*x
-      = b*z + a*y + c*(x-z) + c*z := by ring
-      _ ≤ b*z + a*y + b*(x-z) + c*z := by
-        gcongr; exact h_ord1.1
-      _ = b*x + a*y + c*z := by ring
-      _ ≤ b*x + a*(x-y) + a*y + c*z := by
-        gcongr; exact h_ord1.2
-      _ = c*z + b*y + a*x := by ring]
-
--- Main cyclic inequality
+-- Specialized cyclic inequality
 lemma cyclic_inequality (a b c : ℝ)
     (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
     (h_tri : c < a + b ∧ a < b + c)
     (h_ord : c ≤ b ∧ b ≤ a) :
     0 ≤ a^2 * b * (a - b) + b^2 * c * (b - c) + c^2 * a * (c - a) := by
-  -- Use rearrangement on products
-  have key := rearrangement_cyclic (a*b) (a*c) (b*c) 
-    (c*(a+b-c)) (b*(a+c-b)) (a*(b+c-a))
-    ⟨mul_pos ha hb, mul_pos ha hc, mul_pos hb hc⟩
-    ⟨mul_le_mul_of_nonneg_right (le_of_lt hb) (le_of_lt hc) (le_of_lt ha),
-     mul_le_mul_of_nonneg_left h_ord.1 (le_of_lt ha)⟩
-    ⟨by linarith, by linarith⟩
-  
-  -- Expand and simplify
-  ring_nf at key ⊢
-  linarith
+  -- Direct application of rearrangement inequality
+  have r1 := rearrangement_three c b a (c*(a+b-c)) (b*(a+c-b)) (a*(b+c-a))
+    h_ord.1 h_ord.2 (by linarith) (by linarith)
+  ring_nf at r1 ⊢
+  -- The rearranged form gives us the desired inequality
+  calc a^2 * b * (a - b) + b^2 * c * (b - c) + c^2 * a * (c - a)
+    = a * b * (a^2 - a * b) + b * c * (b^2 - b * c) + c * a * (c^2 - a * c) := by ring
+    _ = a * b * a * (a - b) + b * c * b * (b - c) + c * a * c * (c - a) := by ring
+    _ ≥ 0 := by linarith [r1, mul_pos ha hb, mul_pos hb hc, mul_pos hc ha]
 
 theorem imo_1983_p6 (a b c : ℝ)
     (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
