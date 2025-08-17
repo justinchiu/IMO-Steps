@@ -6,6 +6,7 @@ defaultTargets = ["ImoSteps"]
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 autoImplicit = false
+warningAsError = true
 
 [[require]]
 name = "mathlib"

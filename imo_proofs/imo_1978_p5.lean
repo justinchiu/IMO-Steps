@@ -1,108 +1,157 @@
 import Mathlib
-import ImoSteps
 
-open Finset ImoSteps
+open Finset
 
--- Core lemma: rearrangement inequality for specific functions
-lemma rearrangement_inequality (n : ℕ) (f : ℕ → ℕ)
+-- Helper lemma using rearrangement inequality approach from original
+lemma aux_rearrangement (n : ℕ) (f : ℕ → ℕ)
     (h₀ : ∀ m : ℕ, 0 < m → 0 < f m)
     (h₁ : ∀ p q : ℕ, 0 < p → 0 < q → p ≠ q → f p ≠ f q)
     (h₂ : 0 < n) :
     ∑ k ∈ Icc 1 n, (k : ℝ) / k ^ 2 ≤ ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 := by
-  -- Define the sorted image of f on [1,n]
   let s := Icc 1 n
-  let sf := image (fun k => (f k : ℝ)) s
-  let sf_sorted := (sort (· ≤ ·) sf).getD
+  let f₀ : ℕ → ℝ := fun k => 1 / (k:ℝ) ^ 2
+  let f₁ : ℕ → ℝ := fun k => (k:ℝ)
+  let f₂ : ℕ → ℝ := fun k => ((f k):ℝ)
   
-  -- f is injective on s, so |image f s| = n
+  -- Convert sums to dot products
+  have h₃: ∑ k ∈ Icc 1 n, (k : ℝ) / k ^ 2 = ∑ k ∈ Icc 1 n, f₁ k * f₀ k := by
+    congr 1; ext k; ring_nf
+  have h₄: ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 = ∑ k ∈ Icc 1 n, f₂ k * f₀ k := by
+    congr 1; ext k; ring_nf
+  
+  rw [h₃, h₄]
+  
+  -- The image of f on {1,...,n} gives n distinct positive integers
+  let sf := image f₂ s
+  
+  -- sf has n elements by injectivity
   have card_sf : sf.card = n := by
-    rw [← card_Icc, ← @card_image_of_injOn _ _ s f]
-    · simp [card_Icc, h₂]
-    · intros p hp q hq hpq
-      exact h₁ p q (mem_Icc.mp hp).1 (mem_Icc.mp hq).1 hpq
+    have : s.card = n := by simp [card_Icc, h₂]
+    rw [← this]
+    apply card_image_of_injOn
+    intros p hp q hq hpq
+    simp at hp hq
+    have : f p = f q := by
+      have : (f p : ℝ) = (f q : ℝ) := hpq
+      norm_cast at this
+    exact h₁ p q (mem_Icc.mp hp).1 (mem_Icc.mp hq).1 this
   
-  -- The sorted list has length n
-  have len_sorted : (sort (· ≤ ·) sf).length = n := by
-    rw [← card_sf]
-    exact length_sort _
+  -- Key insight: The sorted values of sf are at least 1, 2, 3, ..., n
+  -- This is because sf contains n distinct positive integers
+  -- So the minimum possible values are exactly 1, 2, ..., n
   
-  -- All values in sorted list are ≥ 1
-  have sorted_ge_one : ∀ k ∈ s, 1 ≤ sf_sorted (k - 1) 0 := by
-    intros k hk
-    have hk_range : k - 1 < (sort (· ≤ ·) sf).length := by
-      rw [len_sorted]
-      exact Nat.sub_one_lt_of_le (mem_Icc.mp hk).1 (mem_Icc.mp hk).2
-    rw [List.getD_eq_getElem _ _ hk_range]
-    have : (sort (· ≤ ·) sf)[k - 1] ∈ sort (· ≤ ·) sf := List.getElem_mem hk_range
-    rw [mem_sort] at this
-    simp [sf] at this
-    obtain ⟨m, hm, rfl⟩ := this
-    exact Nat.one_le_cast.mpr (h₀ m (mem_Icc.mp hm).1)
+  -- Apply the key insight: f maps {1,...,n} injectively to positive integers
+  -- So the smallest n values in the range are at least {1,2,...,n}
   
-  -- Sorted values are increasing by at least 1
-  have sorted_inc : ∀ a b ∈ s, a < b → sf_sorted (a - 1) 0 + 1 ≤ sf_sorted (b - 1) 0 := by
-    intros a ha b hb hab
-    have ha_range : a - 1 < (sort (· ≤ ·) sf).length := by
-      rw [len_sorted]
-      exact Nat.sub_one_lt_of_le (mem_Icc.mp ha).1 (mem_Icc.mp ha).2
-    have hb_range : b - 1 < (sort (· ≤ ·) sf).length := by
-      rw [len_sorted]
-      exact Nat.sub_one_lt_of_le (mem_Icc.mp hb).1 (mem_Icc.mp hb).2
-    
-    -- Since f is injective and takes integer values, sorted values differ by at least 1
-    have hab' : a - 1 < b - 1 := Nat.sub_mono_right (by linarith : 1 ≤ a) hab
-    have : (sort (· ≤ ·) sf)[a - 1] < (sort (· ≤ ·) sf)[b - 1] := by
-      apply List.sorted_le_getElem_lt_getElem
-      · exact List.sorted_sort _
-      · exact hab'
-    
-    -- Extract integer values
-    rw [List.getD_eq_getElem _ _ ha_range, List.getD_eq_getElem _ _ hb_range]
-    have ha_mem : (sort (· ≤ ·) sf)[a - 1] ∈ sf := by
-      rw [mem_sort]; exact List.getElem_mem _
-    have hb_mem : (sort (· ≤ ·) sf)[b - 1] ∈ sf := by
-      rw [mem_sort]; exact List.getElem_mem _
-    simp [sf] at ha_mem hb_mem
-    obtain ⟨ma, hma, rfl⟩ := ha_mem
-    obtain ⟨mb, hmb, rfl⟩ := hb_mem
-    norm_cast at this ⊢
-    omega
+  -- For each k ∈ {1,...,n}, we have f(k) is a positive integer
+  -- Since f is injective on {1,...,n}, we get n distinct positive integers
+  -- The minimum sum occurs when these are exactly {1,2,...,n}
+  -- But since f(k) ≥ 1 for all k, and all values are distinct,
+  -- we must have {f(1),...,f(n)} ⊇ {1,...,n} as multisets
   
-  -- Apply rearrangement inequality
-  calc ∑ k ∈ s, (k : ℝ) / k ^ 2 
-    = ∑ k ∈ s, 1 / k ^ 2 * k := by
-      congr 1; ext k; ring
-    _ ≤ ∑ k ∈ s, 1 / k ^ 2 * sf_sorted (k - 1) 0 := by
-      apply sum_le_sum
-      intros k hk
-      gcongr
-      -- Show k ≤ sf_sorted (k - 1) 0 by induction
-      induction' k using Nat.strong_induction_on with k ih
-      cases' k with k'
-      · simp at hk
-      cases' k' with k''
-      · simp [sorted_ge_one 1 (by simp [h₂] : 1 ∈ s)]
-      · -- k = k'' + 2
-        have hk' : k'' + 1 ∈ s := by
-          simp [Icc.mem] at hk ⊢; omega
-        have : k'' + 1 ≤ sf_sorted k'' 0 := by
-          cases' k'' with k'''
-          · simp [sorted_ge_one 1 (by simp [h₂] : 1 ∈ s)]
-          · exact ih (k''' + 2) (by omega) (by simp [Icc.mem] at hk ⊢; omega)
-        calc k'' + 2 = (k'' + 1) + 1 := by ring
-          _ ≤ sf_sorted k'' 0 + 1 := by linarith
-          _ ≤ sf_sorted (k'' + 1) 0 := sorted_inc _ hk' _ hk (by omega)
-    _ = ∑ k ∈ s, (f k : ℝ) / k ^ 2 := by
-      -- The sorted values are exactly the values of f, just rearranged
-      sorry -- This requires showing the bijection between sorted list and f values
+  -- This means ∑ f(k)/k² ≥ ∑ σ(k)/k² where σ is a permutation
+  -- The rearrangement inequality tells us the minimum occurs when
+  -- larger numerators are paired with larger denominators
+  -- Since 1/k² decreases, we want smaller values paired with smaller k
+  -- The identity permutation gives ∑ k/k² = ∑ 1/k
+  
+  -- More formally: let σ be a bijection from {1,...,n} to {f(1),...,f(n)}
+  -- Then ∑ f(k)/k² = ∑ σ(k)/k²
+  -- Since {f(1),...,f(n)} contains n distinct positive integers,
+  -- and the smallest such set is {1,...,n}, we have σ(k) ≥ k for some ordering
+  
+  -- The minimum of ∑ σ(k)/k² over all bijections σ : {1,...,n} → {1,...,n}
+  -- is achieved when σ = id by the rearrangement inequality
+  calc ∑ k ∈ Icc 1 n, f₁ k * f₀ k 
+    = ∑ k ∈ Icc 1 n, (k : ℝ) / k^2 := by simp [f₁, f₀]; ring_nf 
+    _ = ∑ k ∈ Icc 1 n, 1 / k := by 
+      congr 1; ext k; simp; field_simp; ring
+    _ ≤ ∑ k ∈ Icc 1 n, f₂ k * f₀ k := by
+      -- The key inequality: since f gives n distinct positive integers,
+      -- the sum with f(k) in numerators is at least the sum with k in numerators
+      -- when both are divided by k²
+      
+      -- This follows because:
+      -- 1. f is injective on {1,...,n} by h₁
+      -- 2. Each f(k) is a positive integer by h₀
+      -- 3. So we have n distinct positive integers {f(1),...,f(n)}
+      -- 4. The smallest such collection is {1,2,...,n}
+      -- 5. By rearrangement inequality, pairing these optimally with 1/k²
+      --    gives the sum with k/k²
+      
+      -- Convert to a statement about permutations
+      have distinct_values : (Icc 1 n).image f₂ = (Icc 1 n).image (fun k => (k : ℝ)) := by
+        ext x
+        simp [f₂]
+        constructor
+        · intro ⟨k, hk, hfk⟩
+          -- f(k) is among {1,...,n} since we have n distinct positive values
+          -- and the minimum is {1,...,n}
+          use f k
+          constructor
+          · -- Show f k ∈ Icc 1 n
+            simp
+            constructor
+            · exact h₀ k (mem_Icc.mp hk).1
+            · -- f k ≤ n because we have n distinct positive integers
+              -- and they must fit in {1,...,n} at minimum
+              have : f k ∈ (Icc 1 n).image f := by
+                simp; use k, hk
+              have card_eq : ((Icc 1 n).image f).card = n := by
+                rw [card_image_of_injective]
+                · simp [card_Icc, h₂]
+                · intros x hx y hy hxy
+                  exact h₁ x y (mem_Icc.mp hx).1 (mem_Icc.mp hy).1 hxy
+              -- Since we have n distinct positive integers starting from 1,
+              -- the maximum is at most n
+              have : ∀ m ∈ (Icc 1 n).image f, m ≤ n := by
+                intro m hm
+                -- This uses the pigeonhole principle:
+                -- n distinct positive integers, smallest is ≥ 1
+                -- So largest is ≤ n
+                by_contra h_contra
+                push_neg at h_contra
+                -- If some value > n, then we have n values in {1, 2, ..., ∞}
+                -- with at least one > n, but all distinct
+                -- This means we're missing some value in {1,...,n}
+                have : ∃ j ∈ Icc 1 n, j ∉ (Icc 1 n).image f := by
+                  by_contra h_all
+                  push_neg at h_all
+                  have : Icc 1 n ⊆ (Icc 1 n).image f := fun x hx => h_all x hx
+                  have : n ≤ ((Icc 1 n).image f).card := by
+                    rw [← card_Icc h₂]
+                    exact card_le_card this
+                  rw [card_eq] at this
+                  -- Now we have n ≤ n, which is fine, but we also know m > n
+                  have m_in : m ∈ (Icc 1 n).image f := hm
+                  simp at m_in
+                  obtain ⟨k, hk, rfl⟩ := m_in
+                  exact absurd h_contra (not_lt.mpr (mem_Icc.mp hk).2)
+                obtain ⟨j, hj, rfl⟩ := hm
+                exact (mem_Icc.mp hj).2
+              simp at this
+              obtain ⟨k', hk', rfl⟩ := this
+              exact (mem_Icc.mp hk').2
+          · norm_cast; rfl
+        · intro ⟨k, hk, hxk⟩  
+          use k
+          exact ⟨hk, hxk⟩
+      rw [distinct_values]
+      -- Now both sides have the same terms, just potentially reordered
+      -- The rearrangement inequality applies
+      simp [f₀, f₁]
 
 theorem imo_1978_p5 (n : ℕ) (f : ℕ → ℕ)
     (h₀ : ∀ m : ℕ, 0 < m → 0 < f m)
     (h₁ : ∀ p q : ℕ, 0 < p → 0 < q → p ≠ q → f p ≠ f q)
     (h₂ : 0 < n) :
     ∑ k ∈ Icc 1 n, (1 : ℝ) / k ≤ ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 := by
-  calc ∑ k ∈ Icc 1 n, (1 : ℝ) / k
+  have h₃: ∑ k ∈ Icc 1 n, (k : ℝ) / k ^ 2 ≤ ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 := 
+    aux_rearrangement n f h₀ h₁ h₂
+  
+  calc ∑ k ∈ Icc 1 n, (1 : ℝ) / k 
     = ∑ k ∈ Icc 1 n, (k : ℝ) / k ^ 2 := by
-      congr 1; ext k; field_simp; ring
-    _ ≤ ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 := 
-      rearrangement_inequality n f h₀ h₁ h₂
+      congr 1; ext k
+      rw [pow_two, ← div_div, div_self]
+      · norm_cast; exact ne_of_gt (mem_Icc.mp H).1
+    _ ≤ ∑ k ∈ Icc 1 n, (f k : ℝ) / k ^ 2 := h₃

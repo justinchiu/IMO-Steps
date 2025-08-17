@@ -66,7 +66,18 @@ theorem imo_1983_p6 (a b c : ℝ)
           · exact ⟨hca, hba⟩
           · exact ⟨le_of_lt hba, hac⟩)
     · push_neg at hcb
-      -- Similar permutation argument
-      sorry
+      -- c > b, need to check other orderings
+      by_cases hac : a ≤ c
+      · -- Order is b ≤ a ≤ c, permute cyclically
+        have : a^2*b*(a-b) + b^2*c*(b-c) + c^2*a*(c-a) = 
+               c^2*b*(c-b) + b^2*a*(b-a) + a^2*c*(a-c) := by ring
+        rw [this]
+        exact this hc hb ha ⟨h1, h3, h2⟩ ⟨le_of_lt hcb, le_of_lt (lt_of_not_le hba)⟩
+      · -- Order is b < c < a, permute 
+        push_neg at hac
+        have : a^2*b*(a-b) + b^2*c*(b-c) + c^2*a*(c-a) = 
+               a^2*c*(a-c) + c^2*b*(c-b) + b^2*a*(b-a) := by ring
+        rw [this]
+        exact this ha hc hb ⟨h2, h3, h1⟩ ⟨le_of_lt hcb, le_of_lt hac⟩
   
   exact cyclic_inequality a b c ha hb hc ⟨h_tri.1, h_tri.2.2⟩ h_ord

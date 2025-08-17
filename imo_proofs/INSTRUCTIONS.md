@@ -10,6 +10,7 @@ Refactor and compress the Lean sources as much as possible while keeping all pro
 ## Constraints
 - Keep the project building successfully.
 - Do not alter the names or statements of the theorems in each file.
+- No `sorry` statements allowed - all proofs must be complete.
 - Everything else (internal lemmas, helpers, modules, imports, notations, tactic usage, file layout) is fair game.
 
 ## Success Criteria

@@ -1,0 +1,8 @@
+{"log":
+ [{"message":
+   ".> LEAN_PATH=././.lake/packages/Cli/.lake/build/lib:././.lake/packages/batteries/.lake/build/lib:././.lake/packages/Qq/.lake/build/lib:././.lake/packages/aesop/.lake/build/lib:././.lake/packages/proofwidgets/.lake/build/lib:././.lake/packages/importGraph/.lake/build/lib:././.lake/packages/LeanSearchClient/.lake/build/lib:././.lake/packages/plausible/.lake/build/lib:././.lake/packages/mathlib/.lake/build/lib:././.lake/build/lib LD_LIBRARY_PATH= /home/justinchiu/.elan/toolchains/leanprover--lean4---v4.17.0/bin/lean -Dpp.unicode.fun=true -DautoImplicit=false ././././imo_1959_p1.lean -R ./././. -o ././.lake/build/lib/imo_1959_p1.olean -i ././.lake/build/lib/imo_1959_p1.ilean -c ././.lake/build/ir/imo_1959_p1.c --json",
+   "level": "trace"},
+  {"message":
+   "././././imo_1959_p1.lean:8:3: unused variable `h₀`\nnote: this linter can be disabled with `set_option linter.unusedVariables false`",
+   "level": "warning"}],
+ "depHash": "17240271314870148005"}

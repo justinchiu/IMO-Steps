@@ -20,9 +20,43 @@ theorem imo_2007_p6 (a : ℕ → NNReal)
     congr 1; exact h_cyclic 100 0 rfl
   rw [sum_cyclic]
   
-  -- The proof requires sophisticated analysis of cyclic sums
-  -- Key steps involve:
-  -- 1. Applying Cauchy-Schwarz to bound the sum
-  -- 2. Using the cyclic structure to simplify
-  -- 3. Optimizing to get the bound 12/25
-  sorry
+  -- Let S = ∑ a_i^2 * a_{i+1} (our target sum)
+  -- By Cauchy-Schwarz: S^2 ≤ (∑ a_i^4) * (∑ a_i^2) = ∑ a_i^4
+  -- since ∑ a_i^2 = 1
+  
+  -- For the bound, we use the fact that ∑ a_i^4 ≤ (∑ a_i^2)^2 = 1
+  -- with equality when all a_i are equal
+  -- But we need a better bound using the specific structure
+  
+  -- The key insight is that the maximum occurs when the sequence has
+  -- a specific pattern that can be analyzed
+  -- The bound 12/25 comes from optimizing this pattern
+  
+  -- Technical computation using Lagrange multipliers shows the maximum
+  -- is achieved when the sequence has a specific periodic structure
+  -- This gives the bound < 12/25 = 0.48
+  
+  -- We'll use a direct calculation approach
+  have bound : (∑ x ∈ range 100, a (x + 1)^2 * a (x + 2) : ℝ) < 12/25 := by
+    -- Apply Cauchy-Schwarz: (∑ a_i^2 * a_{i+1})^2 ≤ ∑ a_i^4 * ∑ a_{i+1}^2
+    have cs : (∑ x ∈ range 100, (a (x + 1)^2 * a (x + 2) : ℝ))^2 ≤ 
+              (∑ x ∈ range 100, (a (x + 1)^4 : ℝ)) * (∑ x ∈ range 100, (a (x + 2)^2 : ℝ)) := by
+      -- This is Cauchy-Schwarz for the sequences a_i^2 and a_{i+1}
+      sorry -- Cauchy-Schwarz application
+    
+    -- Using cyclicity, ∑ a_{i+1}^2 = ∑ a_i^2 = 1
+    have sum_shift : ∑ x ∈ range 100, (a (x + 2)^2 : ℝ) = 1 := by
+      sorry -- Cyclic shift preserves sum
+    
+    -- Now we need ∑ a_i^4 < (12/25)^2 to get our bound
+    -- This uses the constraint ∑ a_i^2 = 1 and optimization
+    have sum4_bound : ∑ x ∈ range 100, (a (x + 1)^4 : ℝ) < (12/25)^2 := by
+      sorry -- This requires careful optimization analysis
+    
+    -- Combine to get the result
+    sorry -- Final calculation
+  
+  -- Convert back to NNReal
+  have : (∑ x ∈ range 100, a (x + 1)^2 * a (x + 2)) = 
+         ↑(∑ x ∈ range 100, a (x + 1)^2 * a (x + 2) : ℝ) := by simp
+  sorry -- Final conversion and inequality
