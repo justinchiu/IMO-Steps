@@ -1,20 +1,13 @@
 import Mathlib
+import ImoSteps
 
+open Nat ImoSteps
 
-open Nat
-
-theorem imo_1959_p1
-  (n : ℕ)
-  (h₀ : 0 < n) :
-  Nat.gcd (21*n + 4) (14*n + 3) = 1 := by
-  have h₁: Nat.gcd (21*n + 4) (14*n + 3) = Nat.gcd (7*n + 1) (14*n + 3) := by
-    have g₀: (21 * n + 4) = (7*n + 1) + 1 * (14 * n + 3) := by linarith
-    rw [g₀]
-    exact gcd_add_mul_right_left (7 * n + 1) (14 * n + 3) 1
-  have h₂: Nat.gcd (7*n + 1) (14*n + 3) = Nat.gcd (7*n + 1) (1) := by
-    have g₁: 14 * n + 3 = (7 * n + 1) * 2 + 1 := by linarith
-    rw [g₁]
-    exact gcd_mul_left_add_right (7 * n + 1) 1 2
-  have h₃: Nat.gcd (7*n + 1) (1) = 1 := by
-    exact Nat.gcd_one_right (7 * n + 1)
-  linarith
+theorem imo_1959_p1 (n : ℕ) (h : 0 < n) : gcd (21*n + 4) (14*n + 3) = 1 := by
+  calc gcd (21*n + 4) (14*n + 3)
+    = gcd ((14*n + 3) + (7*n + 1)) (14*n + 3) := by ring_nf
+    _ = gcd (7*n + 1) (14*n + 3) := by rw [gcd_comm]; exact gcd_reduction _ _ _
+    _ = gcd (7*n + 1) 1 := by
+      conv_rhs => rw [show 14*n + 3 = 1 + 2*(7*n + 1) by ring]
+      exact gcd_reduction _ _ _
+    _ = 1 := gcd_one_right _
