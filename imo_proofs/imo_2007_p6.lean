@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open NNReal Nat BigOperators Finset
+open NNReal Nat BigOperators Finset ImoSteps
 
 -- imo-official.org/problems/IMO2007SL.pdf
 
@@ -184,7 +185,7 @@ theorem imo_2007_p6
     intro x
     have h₂₀: 2 * (a x * a (x + 1)) * (a x * a (x + 2)) ≤
       (a x * a (x + 1)) ^ 2 + (a x * a (x + 2)) ^ 2 := by
-      exact two_mul_le_add_sq (a x * a (x + 1)) (a x * a (x + 2))
+      exact _root_.two_mul_le_add_sq (a x * a (x + 1)) (a x * a (x + 2))
     have h₂₁: 2 * (a x * a (x + 1)) * (a x * a (x + 2)) = 2 * a x ^ 2 * a (x + 1) * a (x + 2) := by
       rw [pow_two]
       ring_nf
@@ -488,7 +489,7 @@ theorem imo_2007_p6
       have g₀: ∀ x y : ℝ, 4 * x * y ≤ (x + y) ^ 2 := by
         intros x y
         rw [add_sq]
-        have g₁: 2 * x * y ≤ x ^ 2 + y ^ 2 := by exact two_mul_le_add_sq x y
+        have g₁: 2 * x * y ≤ x ^ 2 + y ^ 2 := by exact _root_.two_mul_le_add_sq x y
         linarith
       rw [← mul_assoc]
       let x := (∑ i ∈ fs₀, a (i + 1) ^ 2)

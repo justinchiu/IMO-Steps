@@ -11,8 +11,6 @@ lemma aux_1
   (h₁ : ∀ (n : ℕ) (x : NNReal), 0 < n → f (n + 1) x = f n x * (f n x + 1 / ↑n)) :
   ∀ (n : ℕ) (x : NNReal), 0 < n ∧ 0 < x → 0 < f n x := by
   intros n x hp
-  have hz₇: n ≤ 7 ∨ 7 < n := by
-    exact le_or_lt n 7
   cases' hp with hn₀ hx₀
   by_cases hn₁: 1 < n
   . refine Nat.le_induction ?_ ?_ n hn₁

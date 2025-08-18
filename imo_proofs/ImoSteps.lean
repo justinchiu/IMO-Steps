@@ -5,7 +5,7 @@ open Nat BigOperators Finset Real
 namespace ImoSteps
 
 -- Prime divisor helpers
--- Used in: imo_1992_p1.lean (via prime_divisor_cases import)
+-- Used in: imo_1992_p1.lean
 lemma prime_divisor_cases {p : ℕ} {x y : ℤ} (hp : Nat.Prime p) (h : x * y = ↑p) :
     x = -1 ∨ x = 1 ∨ x = -↑p ∨ x = ↑p := by
   have ha := Int.natAbs_eq x
@@ -22,7 +22,7 @@ lemma prime_divisor_cases {p : ℕ} {x y : ℤ} (hp : Nat.Prime p) (h : x * y = 
     cases ha <;> simp [*]
 
 -- Factorial helpers  
--- Used in: (none yet - similar to factorial_product_bound)
+-- Used in: (none)
 lemma factorial_bound_helper (n k : ℕ) (h : k ≤ n) :
     (k.factorial : ℚ) * (n - k).factorial ≤ n.factorial := by
   norm_cast
@@ -30,7 +30,7 @@ lemma factorial_bound_helper (n k : ℕ) (h : k ≤ n) :
   exact Nat.le_of_dvd (Nat.factorial_pos _) this
 
 -- Recurrence relation helpers
--- Used in: imo_1985_p6.lean (similar patterns)
+-- Used in: (none - imo_1985_p6 has similar pattern but uses NNReal instead of ℝ)
 lemma recurrence_positive (f : ℕ → ℝ → ℝ)
     (h₀ : ∀ x, f 1 x = x)
     (h₁ : ∀ n x, 0 < n → f (n + 1) x = f n x * (f n x + 1 / n))
@@ -45,13 +45,13 @@ lemma recurrence_positive (f : ℕ → ℝ → ℝ)
     exact div_pos one_pos (Nat.cast_pos.mpr hn)
 
 -- AM-GM inequality for 2 terms
--- Used in: imo_1984_p6.lean (lines 121, 123)
+-- Used in: imo_1984_p6.lean, imo_2007_p6.lean
 lemma two_mul_le_add_sq (a b : ℝ) : 2 * a * b ≤ a^2 + b^2 := by
   have : 0 ≤ (a - b)^2 := sq_nonneg _
   linarith [this]
 
 -- AM-GM inequality for 4 terms
--- Used in: imo_2023_p4.lean (lines 67-97)
+-- Used in: imo_2023_p4.lean
 lemma amgm_four (b1 b2 b3 b4 : ℝ)
     (hb1: 0 ≤ b1) (hb2: 0 ≤ b2) (hb3: 0 ≤ b3) (hb4: 0 ≤ b4) :
     4 * (b1 * b2 * b3 * b4) ^ (4:ℝ)⁻¹ ≤ b1 + b2 + b3 + b4 := by
@@ -81,7 +81,7 @@ lemma amgm_four (b1 b2 b3 b4 : ℝ)
 
 
 -- Rearrangement inequality for 3 terms (standard form)
--- Used in: (none directly)
+-- Used in: (none)
 lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c) 
     (hx : x ≤ y) (hy : y ≤ z) :
     a * z + b * y + c * x ≤ a * x + b * y + c * z := by
@@ -89,7 +89,7 @@ lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c)
   linarith
 
 -- Rearrangement for products (variant 1)
--- Used in: imo_1983_p6.lean (lines 7-31)
+-- Used in: imo_1983_p6.lean
 lemma rearrangement_prod_1 (a b c x y z : ℝ)
     (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
     (h₂: c ≤ b ∧ b ≤ a)
@@ -113,7 +113,7 @@ lemma rearrangement_prod_1 (a b c x y z : ℝ)
   · exact le_of_lt h₀.1
 
 -- Rearrangement for products (variant 2)
--- Used in: imo_1983_p6.lean (lines 33-57)
+-- Used in: imo_1983_p6.lean
 lemma rearrangement_prod_2 (a b c x y z : ℝ)
     (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
     (h₂: c ≤ b ∧ b ≤ a)
@@ -137,7 +137,7 @@ lemma rearrangement_prod_2 (a b c x y z : ℝ)
   · exact le_of_lt h₀.1
 
 -- Exponential growth bound
--- Used in: imo_1997_p5.lean (via exp_bound_small import)
+-- Used in: imo_1997_p5.lean
 lemma exp_bound_small (k : ℕ) (hk : 5 ≤ k) : 4 * k < 2 ^ k := by
   induction' k, hk using Nat.le_induction with n hn ih
   · norm_num
@@ -150,14 +150,14 @@ lemma exp_bound_small (k : ℕ) (hk : 5 ≤ k) : 4 * k < 2 ^ k := by
       _ = 2 ^ (n + 1) := by ring
 
 -- Sum vs product inequality
--- Used in: imo_2022_p5.lean (via sum_lt_product import)
+-- Used in: imo_2022_p5.lean
 lemma sum_lt_product (a b : ℕ) (ha : 2 ≤ a) (hab : a < b) : a + b < a * b := by
   calc a + b < b + b := add_lt_add_right hab b
     _ = 2 * b := by ring
     _ ≤ a * b := mul_le_mul_right' ha b
 
 -- Divisibility in factorials
--- Used in: (none currently)
+-- Used in: (none)
 lemma prime_dvd_factorial (p n : ℕ) (hp : Nat.Prime p) (hn : p ≤ n) : p ∣ n.factorial := by
   exact dvd_factorial hp.pos hn
 
@@ -177,12 +177,12 @@ lemma factorial_le_pow (n : ℕ) : n.factorial ≤ n ^ n := by
 
 
 -- Triangle inequality helper
--- Used in: imo_1964_p2.lean (lines 20, 23, 26)
+-- Used in: imo_1964_p2.lean
 lemma triangle_aux (x y z : ℝ) : (x + y - z) * (x + z - y) ≤ x^2 := by
   nlinarith [sq_nonneg (y - z)]
 
 -- Ackermann-like recurrence pattern
--- Used in: imo_1981_p6.lean (line 14)
+-- Used in: imo_1981_p6.lean
 lemma ackermann_pattern (f : ℕ → ℕ → ℕ)
     (h₀ : ∀ y, f 0 y = y + 1)
     (h₁ : ∀ x, f (x + 1) 0 = f x 1)
@@ -199,7 +199,7 @@ lemma ackermann_pattern (f : ℕ → ℕ → ℕ)
     | succ n ih => rw [h₂, f1, ih]; ring
 
 -- Sequence monotonicity
--- Used in: (none currently)
+-- Used in: (none)
 lemma seq_monotone_strict {α : Type*} [LinearOrder α] (a : ℕ → α)
     (h : ∀ n, a n < a (n + 1)) : StrictMono a := by
   intro m n hmn
@@ -208,14 +208,14 @@ lemma seq_monotone_strict {α : Type*} [LinearOrder α] (a : ℕ → α)
   · exact ih.trans (h k)
 
 -- Power of 2 divisibility
--- Used in: (none currently)
+-- Used in: (none)
 lemma pow2_dvd_iff (n k : ℕ) : 2^k ∣ n ↔ n % 2^k = 0 := by
   constructor
   · intro h; exact Nat.mod_eq_zero_of_dvd h
   · intro h; exact Nat.dvd_of_mod_eq_zero h
 
 -- Interval arithmetic
--- Used in: (none currently)
+-- Used in: (none)
 lemma interval_bound (x : ℝ) (a b : ℝ) (ha : a ≤ x) (hb : x ≤ b) :
     |x| ≤ max |a| |b| := by
   cases' le_or_lt 0 x with hx hx
@@ -229,18 +229,18 @@ lemma interval_bound (x : ℝ) (a b : ℝ) (ha : a ≤ x) (hb : x ≤ b) :
     linarith
 
 -- Modular arithmetic patterns
--- Used in: (none currently)
+-- Used in: (none)
 lemma modEq_sum_const (n : ℕ) (c m : ℕ) : 
     ∑ _ ∈ Finset.range n, c ≡ n * c [MOD m] := by
   simp [Finset.sum_const, Finset.card_range]
   rfl
 
--- Used in: (none currently)
+-- Used in: (none)
 lemma modEq_pow_of_modEq (a b n m : ℕ) (h : a ≡ b [MOD m]) :
     a^n ≡ b^n [MOD m] := ModEq.pow n h
 
 -- Subadditivity pattern for functional equations
--- Used in: imo_1982_p1.lean (line 20)
+-- Used in: imo_1982_p1.lean
 lemma subadditive_of_delta {f : ℕ → ℤ} 
     (h : ∀ m n, 0 < m → 0 < n → f (m + n) - f m - f n ∈ ({0, 1} : Set ℤ)) :
     ∀ m n, 0 < m → 0 < n → f m + f n ≤ f (m + n) := by
@@ -252,7 +252,7 @@ lemma subadditive_of_delta {f : ℕ → ℤ}
   | inr h2 => linarith
 
 -- Multiplicative bound from subadditivity
--- Used in: imo_1982_p1.lean (line 21)
+-- Used in: imo_1982_p1.lean
 lemma mult_bound_of_subadditive {f : ℕ → ℤ}
     (h_sub : ∀ m n, 0 < m → 0 < n → f m + f n ≤ f (m + n)) :
     ∀ m k, 0 < m → 0 < k → k * f m ≤ f (k * m) := by
@@ -267,21 +267,21 @@ lemma mult_bound_of_subadditive {f : ℕ → ℤ}
         _ = f ((k'.succ + 1) * m) := by ring_nf
 
 -- Trigonometric identities
--- Used in: imo_1963_p5.lean (line 9)
+-- Used in: imo_1963_p5.lean
 lemma sin_mul_cos (x y : ℝ) :
     Real.sin x * Real.cos y = (sin (x + y) + sin (x - y)) / 2 := by
   rw [sin_add, sin_sub]
   simp
 
 -- Square root algebraic identity
--- Used in: imo_1962_p2.lean (lines 19-26)
+-- Used in: imo_1962_p2.lean
 lemma sqrt_diff_sq (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
     a + b - 2 * sqrt a * sqrt b = (sqrt a - sqrt b)^2 := by
   rw [sub_sq, sq_sqrt ha, sq_sqrt hb]
   ring
 
 -- Trigonometric sum patterns
--- Used in: imo_1969_p2.lean (has similar manual expansion)
+-- Used in: (none - imo_1969_p2 uses weighted version)
 lemma cos_sum_angle_add (k : ℕ) (a : ℕ → ℝ) (x : ℝ) :
     ∑ i ∈ Finset.range k, Real.cos (a i + x) = 
     (∑ i ∈ Finset.range k, Real.cos (a i)) * Real.cos x - 
@@ -291,7 +291,7 @@ lemma cos_sum_angle_add (k : ℕ) (a : ℕ → ℝ) (x : ℝ) :
   simp only [← Finset.sum_mul]
 
 -- Product telescoping pattern
--- Used in: (none currently)
+-- Used in: (none)
 lemma prod_telescope (f : ℕ → ℚ) (n : ℕ) (h : ∀ i < n, f i ≠ 0) (h0 : f 0 ≠ 0) :
     ∏ i ∈ Finset.range n, (f (i + 1) / f i) = f n / f 0 := by
   induction n with
@@ -306,7 +306,7 @@ lemma prod_telescope (f : ℕ → ℚ) (n : ℕ) (h : ∀ i < n, f i ≠ 0) (h0 
       ring
 
 -- Inequality chain for triangle sides
--- Used in: (none currently)
+-- Used in: (none)
 lemma triangle_ineq_chain (a b c : ℝ) (h_tri : c < a + b ∧ b < a + c ∧ a < b + c) :
     (a + b - c) * (a + c - b) * (b + c - a) > 0 := by
   have h1 : 0 < a + b - c := by linarith [h_tri.1]
@@ -315,14 +315,14 @@ lemma triangle_ineq_chain (a b c : ℝ) (h_tri : c < a + b ∧ b < a + c ∧ a <
   positivity
 
 -- Contradiction from negative square
--- Used in: imo_2022_p2.lean (similar pattern lines 58-66)
+-- Used in: (none - imo_2022_p2 uses different approach)
 lemma neg_sq_false {x y : ℝ} (hxy : x ≠ y) : ¬((x - y)^2 < 0) := by
   have : 0 < (x - y)^2 := sq_pos_of_ne_zero (sub_ne_zero.mpr hxy)
   linarith
 
 
 -- Additional helper for factorial products
--- Used in: (none currently)
+-- Used in: (none)
 lemma factorial_product_bound (n k : ℕ) (h : k ≤ n) :
     k.factorial * (n - k).factorial ≤ n.factorial := by
   have : k.factorial * (n - k).factorial ∣ n.factorial := 
@@ -330,7 +330,7 @@ lemma factorial_product_bound (n k : ℕ) (h : k ≤ n) :
   exact Nat.le_of_dvd (Nat.factorial_pos n) this
 
 -- Quadratic non-residues modulo 5
--- Used in: imo_1974_p3.lean (lines 418, 428)
+-- Used in: imo_1974_p3.lean
 lemma not_square_mod_5_eq_2 (a : ℕ) : ¬ a^2 ≡ 2 [MOD 5] := by
   intro h
   let b := a % 5
@@ -348,5 +348,24 @@ lemma not_square_mod_5_eq_3 (a : ℕ) : ¬ a^2 ≡ 3 [MOD 5] := by
   have hb2 : b^2 ≡ 3 [MOD 5] := ModEq.trans this.symm h
   have : b < 5 := Nat.mod_lt a (by norm_num : 0 < 5)
   interval_cases b <;> (simp only [pow_two, ModEq] at hb2; norm_num at hb2)
+
+-- Sign patterns for products
+-- Used in: (none - imo_1965_p2 uses Mathlib lemmas directly)
+lemma sign_patterns {α : Type*} [LinearOrderedRing α] :
+    (∀ a b : α, a < 0 → b < 0 → 0 < a * b) ∧ 
+    (∀ a b : α, a < 0 → 0 < b → a * b < 0) ∧
+    (∀ a b : α, 0 < a → b < 0 → a * b < 0) ∧
+    (∀ a b : α, 0 < a → 0 < b → 0 < a * b) := by
+  constructor
+  · intros a b ha hb
+    exact mul_pos_of_neg_of_neg ha hb
+  constructor
+  · intros a b ha hb
+    exact mul_neg_of_neg_of_pos ha hb
+  constructor
+  · intros a b ha hb
+    exact mul_neg_of_pos_of_neg ha hb
+  · intros a b ha hb
+    exact mul_pos ha hb
 
 end ImoSteps

@@ -22,8 +22,9 @@ theorem imo_1962_p2
         have g₁:  (1:ℝ) / 4 = (1/2)^2 := by norm_num
         rw [g₁]
         exact pow_lt_pow_left₀ h₂ (by norm_num) (by norm_num)
-      rw [sub_sq]
-      rw [sq_sqrt h₀, sq_sqrt h₁]
+      -- Use sqrt_diff_sq: a + b - 2 * sqrt a * sqrt b = (sqrt a - sqrt b)^2
+      have h_sqrt := sqrt_diff_sq (3 - x) (x + 1) h₀ h₁
+      rw [← h_sqrt]
       ring_nf
     . refine' mul_nonneg _ _
       . refine mul_nonneg (by norm_num) ?_

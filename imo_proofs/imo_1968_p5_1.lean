@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Real
+open Real ImoSteps
 
 
 theorem imo_1968_p5_1
