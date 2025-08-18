@@ -22,3 +22,16 @@ Refactor and compress the Lean sources as much as possible while keeping all pro
 - You may create or expand a common library in `ImoSteps.lean` for reusable utilities to reduce duplication.
 - `imo_*.lean` files may import `ImoSteps` as needed without changing their exposed theorems.
 - Each lemma in `ImoSteps.lean` should document which problems it has been used in (e.g., with a comment listing the problem files).
+
+## Recommended Approach
+- **Focus on abstracting shared lemmas** rather than naive tactic rewriting or formatting changes.
+- Analyze the proofs one-by-one to identify common mathematical patterns and proof techniques.
+- Extract reusable lemmas to `ImoSteps.lean` that capture these patterns.
+- After analyzing each proof, check for lemmas that can be extracted and shared with previously analyzed proofs.
+- Replace duplicated proof logic with calls to shared lemmas from `ImoSteps.lean`.
+- Continuously verify that `lake build` works after each change.
+- Ensure all `sorry` statements are removed before moving on to the next file.
+
+## Important Note
+- **Avoid naive tactic rewriting** - Simply reformatting tactics or combining lines without semantic abstraction does not achieve meaningful compression.
+- The goal is to identify and extract the mathematical patterns and lemmas that are genuinely shared across problems.
