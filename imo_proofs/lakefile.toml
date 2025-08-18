@@ -1,7 +1,12 @@
 name = "imo_steps"
 version = "0.1.0"
 keywords = ["math"]
-defaultTargets = ["ImoSteps"]
+defaultTargets = ["ImoSteps", "imo_1959_p1", "imo_1960_p2", "imo_1962_p2", 
+                  "imo_1963_p5", "imo_1964_p2", "imo_1965_p2", "imo_1968_p5_1", 
+                  "imo_1969_p2", "imo_1974_p3", "imo_1978_p5", "imo_1981_p6", 
+                  "imo_1982_p1", "imo_1983_p6", "imo_1984_p6", "imo_1985_p6", 
+                  "imo_1992_p1", "imo_1997_p5", "imo_2007_p6", "imo_2022_p2", 
+                  "imo_2022_p5", "imo_2023_p4"]
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`

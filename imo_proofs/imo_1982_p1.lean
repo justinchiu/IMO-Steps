@@ -9,22 +9,9 @@ theorem imo_1982_p1 (f : ℕ → ℤ)
     (h₂ : 0 < f 3)
     (h₃ : f 9999 = 3333) :
     f 1982 = 660 := by
-  -- Key properties from the functional equation
-  have subadditive : ∀ m n, 0 < m → 0 < n → f m + f n ≤ f (m + n) := by
-    intros m n hm hn
-    have := h₀ m n hm hn
-    omega
-  
-  have mult_bound : ∀ m k, 0 < m → 0 < k → k * f m ≤ f (k * m) := by
-    intros m k hm hk
-    induction' k with k ih
-    · contradiction
-    · cases' k with k'
-      · simp
-      · calc (k'.succ + 1) * f m = k'.succ * f m + f m := by ring
-          _ ≤ f (k'.succ * m) + f m := by linarith [ih (by omega)]
-          _ ≤ f (k'.succ * m + m) := subadditive _ _ (by positivity) hm
-          _ = f ((k'.succ + 1) * m) := by ring_nf
+  -- Use library lemmas for key properties
+  have subadditive := subadditive_of_delta h₀
+  have mult_bound := mult_bound_of_subadditive subadditive
   
   -- Determine f(3) = 1 from f(9999) = 3333
   have f3_eq : f 3 = 1 := by

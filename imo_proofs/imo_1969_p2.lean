@@ -18,11 +18,8 @@ theorem imo_1969_p2 (m n : ℝ) (k : ℕ) (a : ℕ → ℝ) (f : ℝ → ℝ)
     intro x
     simp only [h₁, cos_add]
     rw [Finset.sum_sub_distrib]
+    simp only [← Finset.sum_mul]
     congr 1
-    · conv_rhs => rw [← Finset.sum_mul]
-      congr 1; ext i; ring
-    · conv_rhs => rw [← Finset.sum_mul]
-      congr 1; ext i; ring
   
   -- Case 1: One of cos m or cos n is zero
   by_cases h_cos : cos m = 0 ∨ cos n = 0
