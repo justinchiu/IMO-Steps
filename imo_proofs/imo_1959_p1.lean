@@ -1,7 +1,7 @@
 import Mathlib
+import ImoSteps
 
-
-open Nat
+open Nat ImoSteps
 
 theorem imo_1959_p1
   (n : ℕ) :

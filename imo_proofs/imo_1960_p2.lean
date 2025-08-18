@@ -1,6 +1,7 @@
 import Mathlib
+import ImoSteps
 
-open Real
+open Real ImoSteps
 
 
 theorem imo_1960_p2
