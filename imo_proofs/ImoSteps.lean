@@ -30,7 +30,7 @@ lemma factorial_bound_helper (n k : ℕ) (h : k ≤ n) :
   exact Nat.le_of_dvd (Nat.factorial_pos _) this
 
 -- Recurrence relation helpers
--- Used in: (none currently - imo_1985_p6 reimplements similar logic)
+-- Used in: imo_1985_p6.lean (similar patterns)
 lemma recurrence_positive (f : ℕ → ℝ → ℝ)
     (h₀ : ∀ x, f 1 x = x)
     (h₁ : ∀ n x, 0 < n → f (n + 1) x = f n x * (f n x + 1 / n))
@@ -50,9 +50,38 @@ lemma two_mul_le_add_sq (a b : ℝ) : 2 * a * b ≤ a^2 + b^2 := by
   have : 0 ≤ (a - b)^2 := sq_nonneg _
   linarith [this]
 
+-- AM-GM inequality for 4 terms
+-- Used in: imo_2023_p4.lean (lines 67-97)
+lemma amgm_four (b1 b2 b3 b4 : ℝ)
+    (hb1: 0 ≤ b1) (hb2: 0 ≤ b2) (hb3: 0 ≤ b3) (hb4: 0 ≤ b4) :
+    4 * (b1 * b2 * b3 * b4) ^ (4:ℝ)⁻¹ ≤ b1 + b2 + b3 + b4 := by
+  let w1 : ℝ := (4:ℝ)⁻¹
+  let w2 : ℝ := w1
+  let w3 : ℝ := w2
+  let w4 : ℝ := w3
+  rw [mul_comm]
+  refine mul_le_of_le_div₀ ?_ (by norm_num) ?_
+  · refine add_nonneg ?_ hb4
+    refine add_nonneg ?_ hb3
+    exact add_nonneg hb1 hb2
+  have h₀: (b1^w1 * b2^w2 * b3^w3 * b4^w4) ≤ w1 * b1 + w2 * b2 + w3 * b3 + w4 * b4 := by
+    refine geom_mean_le_arith_mean4_weighted (by norm_num) ?_ ?_ ?_ hb1 hb2 hb3 hb4 ?_
+    · norm_num
+    · norm_num
+    · norm_num
+    · norm_num
+  repeat rw [mul_rpow _]
+  ring_nf at *
+  linarith
+  repeat { assumption }
+  · exact mul_nonneg hb1 hb2
+  · exact hb4
+  · refine mul_nonneg ?_ hb3
+    exact mul_nonneg hb1 hb2
+
 
 -- Rearrangement inequality for 3 terms
--- Used in: (none currently - imo_1983_p6 has different structure)
+-- Used in: imo_1983_p6.lean (has similar but different mylemma_1/mylemma_2)
 lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c) 
     (hx : x ≤ y) (hy : y ≤ z) :
     a * z + b * y + c * x ≤ a * x + b * y + c * z := by
@@ -197,7 +226,7 @@ lemma sin_mul_cos (x y : ℝ) :
   simp
 
 -- Trigonometric sum patterns
--- Used in: (none currently - imo_1969_p2 could use this)
+-- Used in: imo_1969_p2.lean (has similar manual expansion)
 lemma cos_sum_angle_add (k : ℕ) (a : ℕ → ℝ) (x : ℝ) :
     ∑ i ∈ Finset.range k, Real.cos (a i + x) = 
     (∑ i ∈ Finset.range k, Real.cos (a i)) * Real.cos x - 
@@ -229,6 +258,12 @@ lemma triangle_ineq_chain (a b c : ℝ) (h_tri : c < a + b ∧ b < a + c ∧ a <
   have h2 : 0 < a + c - b := by linarith [h_tri.2.1]
   have h3 : 0 < b + c - a := by linarith [h_tri.2.2]
   positivity
+
+-- Contradiction from negative square
+-- Used in: imo_2022_p2.lean (similar pattern lines 58-66)
+lemma neg_sq_false {x y : ℝ} (hxy : x ≠ y) : ¬((x - y)^2 < 0) := by
+  have : 0 < (x - y)^2 := sq_pos_of_ne_zero (sub_ne_zero.mpr hxy)
+  linarith
 
 
 -- Additional helper for factorial products

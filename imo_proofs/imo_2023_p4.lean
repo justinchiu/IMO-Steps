@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-
+import ImoSteps
 
 set_option linter.unusedVariables.analyzeTactics true
 
-open Real Set
+open Real Set ImoSteps
 
 lemma mylemma_1
   (x a: ℕ → ℝ)
@@ -64,36 +64,7 @@ lemma mylemma_1
   linarith
 
 
-lemma mylemma_amgm
-  (b1 b2 b3 b4 :ℝ)
-  (hb1: 0 ≤ b1)
-  (hb2: 0 ≤ b2)
-  (hb3: 0 ≤ b3)
-  (hb4: 0 ≤ b4) :
-  (4 * (b1 * b2 * b3 * b4) ^ (4:ℝ)⁻¹ ≤ b1 + b2 + b3 + b4) := by
-  let w1 : ℝ := (4:ℝ)⁻¹
-  let w2 : ℝ := w1
-  let w3 : ℝ := w2
-  let w4 : ℝ := w3
-  rw [mul_comm]
-  refine mul_le_of_le_div₀ ?_ (by norm_num) ?_
-  . refine add_nonneg ?_ hb4
-    refine add_nonneg ?_ hb3
-    exact add_nonneg hb1 hb2
-  have h₀: (b1^w1 * b2^w2 * b3^w3 * b4^w4) ≤ w1 * b1 + w2 * b2 + w3 * b3 + w4 * b4 := by
-    refine geom_mean_le_arith_mean4_weighted (by norm_num) ?_ ?_ ?_ hb1 hb2 hb3 hb4 ?_
-    . norm_num
-    . norm_num
-    . norm_num
-    . norm_num
-  repeat rw [mul_rpow _]
-  ring_nf at *
-  linarith
-  repeat { assumption }
-  . exact mul_nonneg hb1 hb2
-  . exact hb4
-  . refine mul_nonneg ?_ hb3
-    exact mul_nonneg hb1 hb2
+-- Now using amgm_four from ImoSteps
 
 
 
@@ -171,7 +142,7 @@ lemma mylemma_2
                 . exact LT.lt.le (hxp (n + 2))
                 . ring_nf
                   exact g₁₂
-              exact mylemma_amgm b1 b2 b3 b4 b1p b2p b3p b4p
+              exact amgm_four b1 b2 b3 b4 b1p b2p b3p b4p
             linarith
       have h₃₃: 4 * a (n) = 4 * (((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k) * (1 / x (n + 1))) *
           ((Finset.sum (Finset.Ico 1 (n + 1)) fun k => x k) * (1 / x (n + 2))) *

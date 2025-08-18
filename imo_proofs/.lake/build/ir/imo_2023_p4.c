@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: imo_2023_p4
-// Imports: Init Mathlib Mathlib.Analysis.SpecialFunctions.Pow.Real
+// Imports: Init Mathlib Mathlib.Analysis.SpecialFunctions.Pow.Real ImoSteps
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -16,6 +16,7 @@ extern "C" {
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib(uint8_t builtin, lean_object*);
 lean_object* initialize_Mathlib_Analysis_SpecialFunctions_Pow_Real(uint8_t builtin, lean_object*);
+lean_object* initialize_ImoSteps(uint8_t builtin, lean_object*);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_imo__2023__p4(uint8_t builtin, lean_object* w) {
 lean_object * res;
@@ -28,6 +29,9 @@ res = initialize_Mathlib(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Mathlib_Analysis_SpecialFunctions_Pow_Real(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_ImoSteps(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 return lean_io_result_mk_ok(lean_box(0));

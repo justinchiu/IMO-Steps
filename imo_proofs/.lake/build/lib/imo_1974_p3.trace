@@ -2,4 +2,4 @@
  [{"message":
    ".> LEAN_PATH=././.lake/packages/Cli/.lake/build/lib:././.lake/packages/batteries/.lake/build/lib:././.lake/packages/Qq/.lake/build/lib:././.lake/packages/aesop/.lake/build/lib:././.lake/packages/proofwidgets/.lake/build/lib:././.lake/packages/importGraph/.lake/build/lib:././.lake/packages/LeanSearchClient/.lake/build/lib:././.lake/packages/plausible/.lake/build/lib:././.lake/packages/mathlib/.lake/build/lib:././.lake/build/lib LD_LIBRARY_PATH= /home/justinchiu/.elan/toolchains/leanprover--lean4---v4.17.0/bin/lean -Dpp.unicode.fun=true -DautoImplicit=false -DwarningAsError=true ././././imo_1974_p3.lean -R ./././. -o ././.lake/build/lib/imo_1974_p3.olean -i ././.lake/build/lib/imo_1974_p3.ilean -c ././.lake/build/ir/imo_1974_p3.c --json",
    "level": "trace"}],
- "depHash": "6380940830691390253"}
+ "depHash": "5382935239563355886"}
