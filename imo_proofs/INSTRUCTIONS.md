@@ -8,7 +8,8 @@ Refactor and compress the Lean sources as much as possible while keeping all pro
 - Allow redesigning proofs, lemmas, and internal structure to reduce size.
 
 ## Constraints
-- Keep the project building successfully.
+- Keep the project building successfully (use `lake build` to verify).
+- Do not edit the lakefile.
 - Do not alter the names or statements of the theorems in each file.
 - No `sorry` statements allowed - all proofs must be complete.
 - Everything else (internal lemmas, helpers, modules, imports, notations, tactic usage, file layout) is fair game.
@@ -20,3 +21,4 @@ Refactor and compress the Lean sources as much as possible while keeping all pro
 ## Shared Library
 - You may create or expand a common library in `ImoSteps.lean` for reusable utilities to reduce duplication.
 - `imo_*.lean` files may import `ImoSteps` as needed without changing their exposed theorems.
+- Each lemma in `ImoSteps.lean` should document which problems it has been used in (e.g., with a comment listing the problem files).

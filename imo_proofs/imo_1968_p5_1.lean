@@ -1,21 +1,37 @@
 import Mathlib
+set_option linter.unusedVariables.analyzeTactics true
 
 open Real
 
-theorem imo_1968_p5_1 (a : ℝ) (f : ℝ → ℝ) (ha : 0 < a)
-    (hf : ∀ x, f (x + a) = 1/2 + sqrt (f x - (f x)^2))
-    (hbounds : ∀ x, 1/2 ≤ f x ∧ f x ≤ 1) :
-    ∃ b > 0, ∀ x, f (x + b) = f x := by
-  use 2*a
-  refine ⟨mul_pos two_pos ha, fun x => ?_⟩
-  have key : f (x + a) - (f (x + a))^2 = (f x - 1/2)^2 := by
-    have h := hf x
-    rw [h, add_sq, sub_sq]
-    simp [sq_sqrt (by nlinarith [hbounds x] : 0 ≤ f x - (f x)^2)]
-    ring
-  calc f (x + 2*a) 
-    = f ((x + a) + a) := by ring_nf
-    _ = 1/2 + sqrt (f (x + a) - (f (x + a))^2) := hf (x + a)
-    _ = 1/2 + sqrt ((f x - 1/2)^2) := by rw [key]
-    _ = 1/2 + |f x - 1/2| := by rw [sqrt_sq]
-    _ = f x := by nlinarith [hbounds x]
+
+theorem imo_1968_p5_1
+  (a : ℝ)
+  (f : ℝ → ℝ)
+  (h₀ : 0 < a)
+  (h₁ : ∀ x, f (x + a) = 1 / 2 + Real.sqrt (f x - (f x)^2))
+  (h₂ : ∀ x, 1 / 2 ≤ f x ∧ f x ≤ 1) :
+  ∃ b > 0, ∀ x, f (x + b) = f x := by
+  use (2 * a)
+  constructor
+  . refine mul_pos (by norm_num) h₀
+  . intro x
+    have h₃: f (x + a) = 1 / 2 + Real.sqrt (f x - (f x)^2) := by
+      exact h₁ x
+    have h₄: f (x + 2 * a) = 1 / 2 + Real.sqrt (f (x + a) - (f (x + a)^2)) := by
+      rw [two_mul, ← add_assoc]
+      exact h₁ (x + a)
+    have h₅: f (x + a) - (f (x + a) ^ 2) = (f x - 1 / 2) ^ 2 := by
+      have h₅₁: 0 ≤ f x - (f x)^2 := by
+        refine sub_nonneg_of_le ?_
+        rw [pow_two]
+        nth_rw 3 [← mul_one (f x)]
+        refine (mul_le_mul_left ?_).mpr ?_
+        . linarith [h₂ x]
+        . exact (h₂ x).2
+      rw [h₃, add_sq, sub_sq, sq_sqrt h₅₁]
+      ring_nf
+    rw [h₅, sqrt_sq ?_] at h₄
+    . linarith
+    . have h₆: 1 / 2 ≤ f x := by
+        exact (h₂ x).1
+      linarith [h₆]

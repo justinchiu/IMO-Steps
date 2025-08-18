@@ -1,58 +1,78 @@
 import Mathlib
-import ImoSteps
+set_option linter.unusedVariables.analyzeTactics true
 
-open Nat ImoSteps
 
-theorem imo_1982_p1 (f : ℕ → ℤ)
-    (h₀ : ∀ m n, 0 < m → 0 < n → f (m + n) - f m - f n ∈ ({0, 1} : Set ℤ))
-    (h₁ : f 2 = 0)
-    (h₂ : 0 < f 3)
-    (h₃ : f 9999 = 3333) :
-    f 1982 = 660 := by
-  -- Use library lemmas for key properties
-  have subadditive := subadditive_of_delta h₀
-  have mult_bound := mult_bound_of_subadditive subadditive
-  
-  -- Determine f(3) = 1 from f(9999) = 3333
-  have f3_eq : f 3 = 1 := by
-    have : 3333 * f 3 ≤ f 9999 := mult_bound 3 3333 (by norm_num) (by norm_num)
-    linarith [h₂, h₃]
-  
-  -- Find f(1980) = 660
-  have f1980_eq : f 1980 = 660 := by
-    have upper : f 1980 ≤ 660 := by
-      have : f (5 * 1980) + f 99 ≤ f 9999 := 
-        subadditive (5 * 1980) 99 (by norm_num) (by norm_num)
-      have h1 : 5 * f 1980 ≤ f (5 * 1980) := 
-        mult_bound 1980 5 (by norm_num) (by norm_num)
-      have h2 : 33 * f 3 ≤ f 99 := 
-        mult_bound 3 33 (by norm_num) (by norm_num)
-      linarith [h₃, f3_eq]
-    have lower : 660 ≤ f 1980 := by
-      have : 660 * f 3 ≤ f 1980 := mult_bound 3 660 (by norm_num) (by norm_num)
-      linarith [f3_eq]
+open Nat
+
+theorem imo_1982_p1
+  (f : ℕ → ℤ)
+  (h₀ : ∀ m n, (0 < m ∧ 0 < n) → f (m + n) - f m - f n = 0 ∨ f (m + n) - f m - f n = 1)
+  (h₁ : f 2 = 0)
+  (h₂ : 0 < f 3)
+  (h₃ : f 9999 = 3333) :
+  f 1982 = 660 := by
+  have h₀₀: ∀ m n, (0 < m ∧ 0 < n) → f m  + f n ≤ f (m + n) := by
+    intros m n hmn
+    have g₀: f (m + n) - f m - f n = 0 ∨ f (m + n) - f m - f n = 1 := by
+      exact h₀ m n hmn
+    omega
+  have h₀₁: ∀ m k, (0 < m ∧ 0 < k) → k * f m ≤ f (k * m) := by
+    intros m k hmk
+    have g₁: 1 ≤ k := by linarith
+    refine Nat.le_induction ?_ ?_ k g₁
+    . simp
+    . intros n hmn  g₂
+      rw [cast_add]
+      rw [add_mul, add_mul, one_mul]
+      simp
+      have g₃: f (n * m) + f (m) ≤ f (n * m + m) := by
+        refine h₀₀ (n * m) m ?_
+        constructor
+        . refine mul_pos ?_ hmk.1
+          exact hmn
+        . exact hmk.1
+      refine le_trans ?_ g₃
+      exact (Int.add_le_add_iff_right (f m)).mpr g₂
+  have h₄: f 3 = 1 := by
+    have g₀ : 3333 * f 3 ≤ f (9999) := by
+      refine h₀₁ 3 3333 ?_
+      omega
     linarith
-  
-  -- Use f(1982) = f(1980) + f(2) + δ where δ ∈ {0,1}
-  have : f 1982 - f 1980 - f 2 ∈ ({0, 1} : Set ℤ) := 
-    h₀ 1980 2 (by norm_num) (by norm_num)
-  
-  -- Check that δ = 0 is the only possibility
-  by_contra h_ne
-  have : f 1982 - f 1980 - f 2 = 1 := by
-    cases' this with h h <;> [exfalso; exact h]; linarith [f1980_eq, h₁]
-  have f1982_eq : f 1982 = 661 := by linarith [f1980_eq, h₁, this]
-  
-  -- But f(1982) = 661 leads to contradiction
-  have : 5 * f 1982 ≤ 3333 - 29 := by
-    have h1 : f (5 * 1982) + f 89 ≤ f 9999 := 
-      subadditive (5 * 1982) 89 (by norm_num) (by norm_num)
-    have h2 : 5 * f 1982 ≤ f (5 * 1982) := 
-      mult_bound 1982 5 (by norm_num) (by norm_num)
-    have h3 : 29 * f 3 ≤ f 87 := 
-      mult_bound 3 29 (by norm_num) (by norm_num)
-    have h4 : f 87 + f 2 ≤ f 89 := 
-      subadditive 87 2 (by norm_num) (by norm_num)
-    linarith [h₁, h₃, f3_eq]
-  
-  linarith [f1982_eq]
+  have h₅: f 1980 = 660 := by
+    have h₅₀: f 1980 ≤ 660 := by
+      have g₀ : f (5 * 1980) + f 99 ≤ f (9999) := by
+        refine h₀₀ (5 * 1980) 99 (by omega)
+      have g₁: 5 * f (1980) ≤ f (5 * 1980) := by
+        exact h₀₁ 1980 5 (by omega)
+      have g₂: 33 * f 3 ≤ f 99 := by
+        exact h₀₁ 3 33 (by omega)
+      rw [h₃] at g₀
+      linarith
+    have h₅₁: 660 ≤ f 1980 := by
+      have g₀ : 660 * f 3 ≤ f (1980) := by
+        refine h₀₁ 3 660 ?_
+        omega
+      rw [h₄] at g₀
+      exact g₀
+    exact le_antisymm h₅₀ h₅₁
+  have h₆: f 1982 - f 1980 - f 2 = 0 ∨ f 1982 - f 1980 - f 2 = 1 := by
+    refine h₀ 1980 2 ?_
+    omega
+  cases' h₆ with h₆₀ h₆₁
+  . linarith
+  . exfalso
+    rw [h₅, h₁] at h₆₁
+    have h₆₂: f 1982 = 661 := by
+      linarith
+    have h₆₃: 5 * f 1982 + 29 ≤ 3333 := by
+      have g₀ : f (5 * 1982) + f 89 ≤ f 9999 := by
+        refine h₀₀ (5 * 1982) 89 (by omega)
+      have g₁: f (29 * 3) + f 2 ≤ f 89 := by
+        refine h₀₀ (29 * 3) 2 (by omega)
+      have g₂: 5 * f (1982) ≤ f (5 * 1982) := by
+        exact h₀₁ 1982 5 (by omega)
+      have g₃: 29 * f 3 ≤ f (87) := by
+        exact h₀₁ 3 29 (by omega)
+      linarith
+    rw [h₆₂] at h₆₃
+    linarith

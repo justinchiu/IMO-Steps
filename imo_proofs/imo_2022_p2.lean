@@ -1,179 +1,256 @@
 import Mathlib
-import ImoSteps
+set_option linter.unusedVariables.analyzeTactics true
 
-open ImoSteps
 
-theorem imo_2022_p2_simple (g : ℝ → ℝ)
-    (h₀ : ∀ x, 0 < x → ∃ y : ℝ, 0 < y ∧ g x + g y ≤ 2 * x * y ∧ 
-          ∀ z : ℝ, 0 < z ∧ z ≠ y → ¬g x + g z ≤ 2 * x * z) :
-    ∀ x : ℝ, 0 < x → g x = x^2 := by
-  -- Step 1: Show uniqueness - if g(x) + g(y) ≤ 2xy then x = y
-  have unique : ∀ x y : ℝ, 0 < x → 0 < y → g x + g y ≤ 2 * x * y → x = y := by
-    intros x y hx hy hxy
-    by_contra hne
-    -- For x, there's unique p with g(x) + g(p) ≤ 2xp
-    obtain ⟨p, hp_pos, hp_ineq, hp_unique⟩ := h₀ x hx
-    -- For y, there's unique q with g(y) + g(q) ≤ 2yq  
-    obtain ⟨q, hq_pos, hq_ineq, hq_unique⟩ := h₀ y hy
-    
-    -- If x ≠ p, then g(x) + g(x) > 2x²
-    have gx_strict : x ≠ p → 2 * x^2 < g x + g x := by
-      intro hxp
-      have := hp_unique x ⟨hx, hxp⟩
-      push_neg at this
-      linarith [this]
-    
-    -- If y ≠ q, then g(y) + g(y) > 2y²
-    have gy_strict : y ≠ q → 2 * y^2 < g y + g y := by
-      intro hyq
-      have := hq_unique y ⟨hy, hyq⟩
-      push_neg at this
-      linarith [this]
-    
-    -- Case analysis on whether x = p and y = q
-    by_cases hxp : x = p
-    · -- If x = p, then y must also equal p by uniqueness, contradiction
-      subst hxp
-      have : y ≠ p := Ne.symm hne
-      have := hp_unique y ⟨hy, this⟩
-      linarith
-    · by_cases hyq : y = q
-      · -- If y = q but x ≠ p, symmetric argument
-        subst hyq
-        have : x ≠ q := hne
-        have := hq_unique x ⟨hx, this⟩
-        rw [add_comm, mul_comm y x] at hxy
+theorem imo_2022_p2_simple
+  (g: ℝ → ℝ)
+  (h₀: ∀ x, 0 < x → ∃ y:ℝ , (0 < y ∧ g (x) + g (y) ≤ 2 * x * y
+        ∧ (∀ z:ℝ, (0 < z ∧ z ≠ y) →  ¬ g (x) + g (z) ≤ 2 * x * z) )) :
+  (∀ x:ℝ , 0 < x → g x = x^2) := by
+  have h₁: ∀ x y:ℝ , 0 < x ∧ 0 < y → g x + g y ≤ 2 * x * y → x = y := by
+    intros x y hp h₁
+    by_contra! hc
+    have g₁: 2 * x * x < g x + g x := by
+      let ⟨p,h₁₁⟩ := h₀ x hp.1
+      cases' h₁₁ with h₁₁ h₁₂
+      cases' h₁₂ with h₁₂ h₁₃
+      by_cases hxp: x ≠ p
+      . have h₁₄: ¬ g x + g x ≤ 2 * x * x := by
+          refine h₁₃ x ?_
+          constructor
+          . exact hp.1
+          . exact hxp
+        exact not_le.mp h₁₄
+      . push_neg at hxp
+        exfalso
+        have hpy: y ≠ p := by exact Ne.trans_eq (id (Ne.symm hc)) hxp
+        have hcy: ¬g x + g y ≤ 2 * x * y := by
+          refine h₁₃ y ?_
+          constructor
+          . exact hp.2
+          . exact hpy
         linarith
-      · -- Both x ≠ p and y ≠ q lead to contradiction
-        have h1 := gx_strict hxp
-        have h2 := gy_strict hyq
-        have : g x + g y > x^2 + y^2 := by linarith
-        have : (x - y)^2 < 0 := by linarith [sq_nonneg (x - y)]
-        linarith [sq_nonneg (x - y)]
-  
-  -- Step 2: Show g(x) ≤ x² for all x > 0
-  have upper : ∀ x : ℝ, 0 < x → g x ≤ x^2 := by
-    intros x hx
-    obtain ⟨y, hy_pos, hy_ineq, _⟩ := h₀ x hx
-    have : x = y := unique x y hx hy_pos hy_ineq
-    subst this
+    have g₂: 2 * y * y < g y + g y := by
+      let ⟨p,h₁₁⟩ := h₀ y hp.2
+      cases' h₁₁ with h₁₁ h₁₂
+      cases' h₁₂ with h₁₂ h₁₃
+      by_cases hyp: y ≠ p
+      . have h₁₄: ¬ g y + g y ≤ 2 * y * y := by
+          refine h₁₃ y ?_
+          constructor
+          . exact hp.2
+          . exact hyp
+        exact not_le.mp h₁₄
+      . push_neg at hyp
+        exfalso
+        have hpx: x ≠ p := by exact Ne.trans_eq hc hyp
+        have hcy: ¬g x + g y ≤ 2 * x * y := by
+          rw [add_comm, mul_right_comm]
+          refine h₁₃ x ?_
+          constructor
+          . exact hp.1
+          . exact hpx
+        linarith
+    ring_nf at g₁ g₂
+    simp at g₁ g₂
+    have g₃: x ^ 2 + y ^ 2 < g x + g y := by exact add_lt_add g₁ g₂
+    have g₄: x ^ 2 + y ^ 2 < 2 * x * y := by exact LT.lt.trans_le g₃ h₁
+    have g₅: (x - y) ^ 2 < 0 := by
+      rw [sub_sq, sub_add_eq_add_sub]
+      exact sub_neg.mpr g₄
+    have g₆: (x - y) ≠ 0 := by exact sub_ne_zero.mpr hc
+    have g₇: 0 < (x - y) ^ 2 := by exact (sq_pos_iff).mpr g₆
+    have g₈: (0:ℝ) ≠ 0 := by
+      refine ne_of_lt ?_
+      exact lt_trans g₇ g₅
+    refine false_of_ne g₈
+  have h₂: ∀ x:ℝ , 0 < x → g x ≤ x ^ 2 := by
+    intros x hxp
+    let ⟨y,h₁₁⟩ := h₀ x hxp
+    cases' h₁₁ with h₁₁ h₁₂
+    cases' h₁₂ with h₁₂ h₁₃
+    have hxy: x = y := by
+      apply h₁ x y
+      . exact { left := hxp, right := h₁₁ }
+      . exact h₁₂
+    rw [← hxy] at h₁₂
     linarith
-  
-  -- Step 3: Show g(x) ≥ x² for all x > 0
-  have lower : ∀ x : ℝ, 0 < x → x^2 ≤ g x := by
-    intros x hx
-    by_contra h_neg
-    push_neg at h_neg
-    
-    -- Choose ε small enough
-    let ε := (x^2 - g x) / (4 * x)
-    have hε_pos : 0 < ε := by
-      simp [ε]
-      field_simp
-      linarith
-    
-    -- Consider x + ε
-    have hxε_pos : 0 < x + ε := by linarith
-    obtain ⟨z, hz_pos, hz_ineq, hz_unique⟩ := h₀ (x + ε) hxε_pos
-    
-    -- Check if z could equal x
-    have : g (x + ε) + g x ≤ 2 * (x + ε) * x := by
-      have h1 := upper (x + ε) hxε_pos
-      have h2 := upper x hx
-      calc g (x + ε) + g x 
-        ≤ (x + ε)^2 + g x := by linarith [h1]
-        _ < (x + ε)^2 + x^2 := by linarith
-        _ = 2 * x * (x + ε) + ε^2 := by ring
-        _ ≤ 2 * x * (x + ε) + ε * x := by
-          have : ε^2 ≤ ε * x := by
-            simp [ε]
-            field_simp
-            nlinarith
-          linarith
-        _ = 2 * (x + ε) * x := by ring
-    
-    -- But this means z = x by uniqueness
-    have : z = x := unique (x + ε) x hxε_pos hx this
-    
-    -- However, if z = x, we get contradiction from g(x) < x²
-    have bound := upper (x + ε) hxε_pos
-    rw [this] at hz_ineq
-    have : (x + ε)^2 + g x ≤ 2 * (x + ε) * x := by linarith [bound]
-    have : x^2 + 2*x*ε + ε^2 + g x ≤ 2*x^2 + 2*x*ε := by linarith
-    have : ε^2 + g x ≤ x^2 := by linarith
-    simp [ε] at this
-    field_simp at this
-    linarith
-  
-  -- Combine upper and lower bounds
-  intros x hx
-  exact le_antisymm (upper x hx) (lower x hx)
+  have h₃: ∀ x:ℝ , 0 < x → ¬ g x < x ^ 2 := by
+    simp
+    by_contra! hc
+    let ⟨x,hxp⟩ := hc
+    cases' hxp with hxp h₃
+    let d₁:ℝ := x ^ 2 - g x
+    have hd₁ : g x = x ^ 2 - d₁ := by exact (sub_sub_self (x ^ 2) (g x)).symm
+    let z:ℝ := x + Real.sqrt d₁
+    have hz: z = x + Real.sqrt d₁ := by exact rfl
+    have hzp: 0 < z := by
+      refine add_pos hxp ?_
+      refine Real.sqrt_pos_of_pos ?_
+      exact sub_pos.mpr h₃
+    have hxz: z ≠ x := by
+      rw [hz]
+      simp
+      push_neg
+      refine Real.sqrt_ne_zero'.mpr ?_
+      exact sub_pos.mpr h₃
+    have h₅: g x + g z ≤ 2 * x * z := by
+      rw [hd₁]
+      have h₅₁: - d₁ + Real.sqrt (x ^ 2 - (x ^ 2 - d₁)) ^ 2 ≤ 0 := by
+        simp
+        rw [Real.sq_sqrt]
+        exact sub_nonneg_of_le (h₂ x hxp)
+      have h₅₂: x ^ 2 - d₁ + z ^ 2 ≤ 2 * x * z := by
+        rw [hz, mul_add, add_sq]
+        ring_nf
+        repeat rw [add_assoc]
+        refine add_le_add_left ?_ (x * Real.sqrt (x ^ 2 - g x) * 2)
+        rw [hd₁]
+        linarith
+      exact add_le_of_add_le_left h₅₂ (h₂ z hzp)
+    let ⟨y,hyp⟩ := h₀ x hxp
+    cases' hyp with hyp h₆
+    cases' h₆ with h₆ h₇
+    have hxy: x = y := by
+      apply h₁
+      . exact { left := hxp, right := hyp }
+      . exact h₆
+    have h₈: ¬g x + g z ≤ 2 * x * z := by
+        refine h₇ z ?_
+        constructor
+        . exact hzp
+        . exact Ne.trans_eq hxz hxy
+    linarith[h₅,h₈]
+  intros x hxp
+  have g₂: g x ≤ x ^ 2 := by exact h₂ x hxp
+  have g₃: ¬ g x < x ^ 2 := by exact h₃ x hxp
+  linarith
 
-theorem imo_2022_p2 (n : ℕ) (a : Fin (n + 1) → ℝ → ℝ)
-    (h_add : ∀ i : Fin n, ∀ x, a i x + a i.succ x = 2 * x)
-    (ha_pos : ∀ i, ∀ x, 0 < x → 0 < a i x) :
-    (n : ℝ) ≤ 4 := by
-  -- From the functional equation: a_i(x) + a_{i+1}(x) = 2x
-  -- Summing telescopes to: a_0(x) + a_n(x) = 2x when n is even
-  -- and a_0(x) - a_n(x) = 0 when n is odd
-  
-  by_cases hn : Even n
-  · -- Even case: a_0(x) + a_n(x) = 2x
-    obtain ⟨k, rfl⟩ := hn
-    have sum_telescope : ∀ x, a 0 x + a (Fin.last (2*k)) x = 2 * x := by
-      intro x
-      have : ∑ i : Fin (2*k), (a i x + a i.succ x) = 
-             ∑ i : Fin (2*k), 2 * x := by
-        congr 1
-        ext i
-        exact h_add i x
-      simp at this
-      -- Telescoping sum: alternating +/- cancels middle terms
-      -- ∑ (a_i + a_{i+1}) = a_0 + 2∑_{i=1}^{n-1} a_i + a_n
-      -- But each pair sums to 2x, and pairs cancel except endpoints
-      simp only [Fin.sum_univ_succ, Fin.succ_last]
-      ring_nf
-      -- The telescoping leaves only a_0 + a_n = 2x
-      norm_num
-    
-    -- This constrains n ≤ 4 from positivity
-    by_contra h_neg
-    push_neg at h_neg
-    have : 4 < 2 * k := by linarith
-    have : 2 < k := by linarith
-    -- With k > 2, we have n = 2k > 4
-    -- But the positivity constraint a_i(x) > 0 combined with
-    -- a_0(x) + a_n(x) = 2x forces n ≤ 4
-    -- Take x = 1: a_0(1) + a_n(1) = 2
-    -- Both positive means each < 2, but the recurrence forces growth
-    exfalso
-    have : (2 * k : ℝ) ≤ 4 := by norm_cast; omega
+
+
+
+
+theorem imo_2022_p2
+  (f: ℝ → ℝ)
+  (hfp: ∀ x:ℝ, 0 < x → 0 < f x)
+  (h₀: ∀ x:ℝ , 0 < x → ∃! y:ℝ , 0 < y ∧ (x * f (y) + y * f (x) ≤ 2) ):
+  ∀ x:ℝ , 0 < x → f (x) = 1 / x := by
+  have h₁: ∀ x y:ℝ , (0 < x ∧ 0 < y) → (x * f (y) + y * f (x) ≤ 2) → x = y := by
+    intros x y hp h₁
+    by_contra! hc
+    have h₁₀: x * f x + x * f x > 2 := by
+      let ⟨z,h₁₁⟩ := h₀ x hp.1
+      cases' h₁₁ with h₁₁ h₁₂
+      have h₁₄: y = z := by
+        apply h₁₂ y
+        constructor
+        . exact hp.2
+        . exact h₁
+      have hxz: ¬ x = z := by exact Ne.trans_eq hc h₁₄
+      have h₁₆: ¬ (fun y => 0 < y ∧ x * f y + y * f x ≤ 2) x := by
+        exact mt (h₁₂ x) hxz
+      have h₁₇: ¬ (0 < x ∧ x * f x + x * f x ≤ 2) := by exact h₁₆
+      push_neg at h₁₇
+      exact h₁₇ hp.1
+    have h₁₁: y * f y + y * f y > 2 := by
+      let ⟨z,h₁₁⟩ := h₀ y hp.2
+      cases' h₁₁ with h₁₁ h₁₂
+      have h₁₄: x = z := by
+        apply h₁₂ x
+        constructor
+        . exact hp.1
+        . rw [add_comm]
+          exact h₁
+      have hxz: ¬ y = z := by exact Ne.trans_eq (id (Ne.symm hc)) h₁₄
+      have h₁₆: ¬ (fun y_2 => 0 < y_2 ∧ y * f y_2 + y_2 * f y ≤ 2) y := by
+        exact mt (h₁₂ y) hxz
+      have h₁₇: ¬ (0 < y ∧ y * f y + y * f y ≤ 2) := by exact h₁₆
+      push_neg at h₁₇
+      exact h₁₇ hp.2
+    ring_nf at h₁₀ h₁₁
+    simp at h₁₀ h₁₁
+    have h₁₅: 1 / x < f x := by exact (div_lt_iff₀' hp.1).mpr (h₁₀)
+    have h₁₆: 1 / y < f y := by exact (div_lt_iff₀' hp.2).mpr (h₁₁)
+    have h₁₂: x / y + y / x < 2 := by
+      refine lt_of_le_of_lt' h₁ ?_
+      refine add_lt_add ?_ ?_
+      . rw [← mul_one_div]
+        exact (mul_lt_mul_left hp.1).mpr h₁₆
+      . rw [← mul_one_div]
+        exact (mul_lt_mul_left hp.2).mpr h₁₅
+    have h₁₃: 2 < x / y + y / x := by
+      refine lt_of_mul_lt_mul_right ?_ (le_of_lt hp.1)
+      refine lt_of_mul_lt_mul_right ?_ (le_of_lt hp.2)
+      repeat rw [add_mul, mul_assoc]
+      rw [mul_comm x y, ← mul_assoc (x/y)]
+      rw [div_mul_comm x y y, div_mul_comm y x x, div_self, div_self]
+      . ring_nf
+        refine lt_of_sub_pos ?_
+        rw [mul_comm _ 2, ← mul_assoc]
+        rw [← sub_sq']
+        refine sq_pos_of_ne_zero ?_
+        exact sub_ne_zero.mpr hc.symm
+      . exact ne_of_gt hp.1
+      . exact ne_of_gt hp.2
     linarith
-    
-  · -- Odd case: a_0(x) = a_n(x) for all x
-    push_neg at hn
-    have : Odd n := odd_iff_not_even.mpr hn
-    obtain ⟨k, rfl⟩ := this
-    
-    have eq_telescope : ∀ x, a 0 x = a (Fin.last (2*k+1)) x := by
-      intro x
-      -- For odd n, the alternating sum gives a_0 - a_n = 0
-      -- So a_0 = a_n for all x
-      simp only [Fin.sum_univ_succ]
-      -- The recurrence alternates signs, canceling to equality
-      ring_nf
-      norm_num
-    
-    -- This gives n ≤ 3 from the constraints
-    by_contra h_neg
-    push_neg at h_neg
-    have : 4 < 2 * k + 1 := by linarith
-    have : 1 < k := by linarith
-    -- With k > 1, we have n = 2k+1 > 3
-    -- But a_0 = a_n combined with the recurrence constraints
-    -- forces n ≤ 3 for positivity to hold
-    exfalso
-    have : (2 * k + 1 : ℝ) ≤ 4 := by
-      have : k ≤ 1 := by omega
-      norm_cast; omega
+  have h₂: ∀ x:ℝ , 0 < x → x * f x ≤ 1 := by
+    intros x hxp
+    let ⟨y,h₂₁⟩ := h₀ x hxp
+    cases' h₂₁ with h₂₁ h₂₂
+    have hxy: x = y := by
+      apply h₁ x y
+      . constructor
+        . exact hxp
+        . exact h₂₁.1
+      . exact h₂₁.2
+    rw [← hxy] at h₂₁
+    linarith
+  have h₃: ∀ x:ℝ , 0 < x → ¬ x * f x < 1 := by
+    by_contra! hc
+    let ⟨x,hxp⟩ := hc
+    cases' hxp with hxp h₃
+    let d₁:ℝ := 1 - x * f x
+    have hd₁ : x * f x = 1 - d₁ := by exact (sub_sub_self 1 (x * f x)).symm
+    let z:ℝ := x + d₁ / f x
+    have hz: z = x + d₁ / f x := by exact rfl
+    have hzp: 0 < z := by
+      refine add_pos hxp ?_
+      refine div_pos ?_ ?_
+      . exact sub_pos.mpr h₃
+      . exact hfp x hxp
+    have hxz: ¬ x = z := by
+      by_contra! hcz₀
+      rw [← hcz₀] at hz
+      have hcz₁: 0 < d₁ / f x := by
+        refine div_pos ?_ (hfp x hxp)
+        exact sub_pos.mpr h₃
+      linarith
+    have h₄: ¬ (x * f z + z * f x ≤ 2) := by
+      have h₄₁: x * f z + z * f x ≤ 2 → x = z := by
+        exact h₁ x z { left := hxp, right := hzp }
+      exact mt h₄₁ hxz
+    have h₅: x * f z < 1 := by
+      suffices h₅₁: z * f z ≤ 1 by
+        refine lt_of_lt_of_le ?_ h₅₁
+        refine (mul_lt_mul_right (hfp z hzp)).mpr ?_
+        rw [hz]
+        refine lt_add_of_pos_right x ?_
+        refine div_pos ?_ (hfp x hxp)
+        exact sub_pos.mpr h₃
+      exact h₂ z hzp
+    have h₆: x * f z + z * f x < 2 := by
+      suffices h₇: z * f x ≤ 1 by
+        linarith
+      rw [hz, add_mul, hd₁]
+      rw [div_mul_comm d₁ (f x) (f x)]
+      rw [div_self]
+      . rw [one_mul, sub_add_cancel]
+      . exact Ne.symm (ne_of_lt (hfp x hxp))
+    linarith
+  intros x hxp
+  have h₄: x * f x ≤ 1 := by exact h₂ x hxp
+  have h₅: ¬ x * f x < 1 := by exact h₃ x hxp
+  refine eq_div_of_mul_eq ?_ ?_
+  . exact ne_of_gt hxp
+  . push_neg at h₅
     linarith
