@@ -261,82 +261,6 @@ lemma mylemma_p_lt_4
   linarith
 
 
-lemma q_r_divisor_of_prime
-  (q r : ℤ)
-  (p: ℕ)
-  (h₀ : q * r = ↑p)
-  (h₁: Nat.Prime p) :
-  q = -1 ∨ q = 1 ∨ q = -p ∨ q = p := by
-  have hq : q ≠ 0 := by
-    intro h
-    rw [h] at h₀
-    simp at h₀
-    symm at h₀
-    norm_cast at h₀
-    rw [h₀] at h₁
-    exact Nat.not_prime_zero h₁
-  have hr : r ≠ 0 := by
-    intro h
-    rw [h] at h₀
-    simp at h₀
-    norm_cast at h₀
-    rw [← h₀] at h₁
-    exact Nat.not_prime_zero h₁
-  have hqr : abs q * abs r = p := by
-    have h₃: abs q = q.natAbs := by exact abs_eq_natAbs q
-    have h₄: abs r = r.natAbs := by exact abs_eq_natAbs r
-    rw [h₃,h₄]
-    norm_cast
-    exact Int.natAbs_mul_natAbs_eq h₀
-  have h_abs: abs (↑(q.natAbs):ℤ) = 1 ∨ abs q = p := by
-    cases' Int.natAbs_eq q with h_1 h_2
-    . rw [h_1] at hqr
-      have h₂: abs (↑(q.natAbs):ℤ) ∣ p := by exact Dvd.intro (abs r) hqr
-      have h₃: (↑(q.natAbs):ℕ) ∣ p := by
-        norm_cast at *
-      have h₄: (↑(q.natAbs):ℕ) = 1 ∨ (↑(q.natAbs):ℕ) = p := by
-        exact Nat.Prime.eq_one_or_self_of_dvd h₁ (↑(q.natAbs):ℕ) h₃
-      cases' h₄ with h₄₀ h₄₁
-      . left
-        norm_cast at *
-      have h₅: abs q = q.natAbs := by exact abs_eq_natAbs q
-      right
-      rw [h₅]
-      norm_cast at *
-    . rw [h_2] at hqr
-      rw [abs_neg _] at hqr
-      have h₂: abs (↑(q.natAbs):ℤ) ∣ p := by exact Dvd.intro (abs r) hqr
-      have h₃: (↑(q.natAbs):ℕ) ∣ p := by
-        norm_cast at *
-      have h₄: (↑(q.natAbs):ℕ) = 1 ∨ (↑(q.natAbs):ℕ) = p := by
-        exact Nat.Prime.eq_one_or_self_of_dvd h₁ (↑(q.natAbs):ℕ) h₃
-      cases' h₄ with h₄₀ h₄₁
-      . left
-        norm_cast at *
-      . have h₅: abs q = q.natAbs := by exact abs_eq_natAbs q
-        right
-        rw [h₅]
-        norm_cast
-  cases' h_abs with hq_abs hq_abs
-  . norm_cast at *
-    have h₄: q = ↑(q.natAbs) ∨ q = -↑(q.natAbs) := by
-      exact Int.natAbs_eq q
-    rw [hq_abs] at h₄
-    norm_cast at h₄
-    cases' h₄ with h₄₀ h₄₁
-    . right
-      left
-      exact h₄₀
-    . left
-      exact h₄₁
-  . right
-    right
-    have h₂: abs q = q.natAbs := by exact abs_eq_natAbs q
-    rw [h₂] at hq_abs
-    norm_cast at hq_abs
-    refine or_comm.mp ?_
-    refine (Int.natAbs_eq_natAbs_iff).mp ?_
-    norm_cast
 
 
 lemma mylemma_qr_11
@@ -344,7 +268,7 @@ lemma mylemma_qr_11
   (h₀: (4 - q) * (4 - r) = 11) :
   (4 - q = -1 ∨ 4 - q = 1 ∨ 4 - q = -11 ∨ 4 - q = 11) := by
   have h₁: Nat.Prime (11) := by decide
-  exact q_r_divisor_of_prime (4-q) (4-r) 11 h₀ h₁
+  exact prime_divisor_cases h₁ h₀
 
 
 lemma mylemma_qr_5
@@ -352,7 +276,7 @@ lemma mylemma_qr_5
   (h₀: (q - 3) * (r - 3) = 5) :
   (q - 3 = -1 ∨ q - 3 = 1 ∨ q - 3 = -5 ∨ q - 3 = 5) := by
   have h₁: Nat.Prime (5) := by decide
-  exact q_r_divisor_of_prime (q - 3) (r - 3) 5 h₀ h₁
+  exact prime_divisor_cases h₁ h₀
 
 
 lemma mylemma_63qr_5
@@ -360,7 +284,7 @@ lemma mylemma_63qr_5
   (h₀: (6 - 3*q) * (2 - r) = 5) :
   (6 - 3*q = -1 ∨ 6 - 3*q = 1 ∨ 6 - 3*q = -5 ∨ 6 - 3*q = 5) := by
   have h₁: Nat.Prime (5) := by decide
-  exact q_r_divisor_of_prime (6 - 3*q) (2 - r) 5 h₀ h₁
+  exact prime_divisor_cases h₁ h₀
 
 
 lemma mylemma_case_k_2

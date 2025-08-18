@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Nat Real
+open Nat Real ImoSteps
 
 
 lemma mylemma_xy_le_y
@@ -22,27 +23,6 @@ lemma mylemma_xy_le_y
   linarith [h₂, h₃]
 
 
-lemma four_times_k_less_than_two_pow_k
-  (k : ℕ)
-  (hk : 5 ≤ k) :
-  4 * k < 2 ^ k := by
-  -- Proceed by induction on k
-  induction' k using Nat.case_strong_induction_on with n ih
-  -- Base case: k = 0 is not possible since 5 ≤ k
-  -- so we start directly with k = 5 as the base case
-  . norm_num
-  by_cases h₀ : n < 5
-  . have hn: n = 4 := by linarith
-    rw [hn]
-    norm_num
-  . push_neg at h₀
-    have ih₁ : 4 * n < 2 ^ n := ih n (le_refl n) h₀
-    rw [mul_add, pow_add, mul_one, pow_one, mul_two]
-    refine Nat.add_lt_add ih₁ ?_
-    refine lt_trans ?_ ih₁
-    refine (Nat.lt_mul_iff_one_lt_right (by norm_num)).mpr ?_
-    refine Nat.lt_of_lt_of_le ?_ h₀
-    norm_num
 
 
 lemma mylemma_case_xley
@@ -367,7 +347,7 @@ theorem imo_1997_p5
             have hk1: 3 ≤ k - 2 := by exact Nat.sub_le_sub_right hk5 2
             exact (Nat.pow_le_pow_iff_left (by linarith)).mpr hy
           have h₇: 4*k < 2^k := by
-            exact four_times_k_less_than_two_pow_k k hk5
+            exact exp_bound_small k hk5
           have h₇: k < 2^(k-2) := by
             have h₈ : k < 2 ^ k / 4 := by
               have h81: 4 ∣ 2^k := by

@@ -1,14 +1,8 @@
 import Mathlib
+import ImoSteps
 
-open Real
+open Real ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
-
-
-lemma sin_mul_cos
-  (x y : ℝ) :
-  Real.sin x * Real.cos y = (sin (x + y) + sin (x - y)) / 2 := by
-    rw [sin_add, sin_sub]
-    simp
 
 theorem imo_1963_p5 :
   Real.cos (π / 7) - Real.cos (2 * π / 7) + Real.cos (3 * π / 7) = 1 / 2 := by

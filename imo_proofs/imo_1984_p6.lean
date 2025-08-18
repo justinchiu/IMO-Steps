@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Nat
+open Nat ImoSteps
 
 
 lemma mylemma_sub_sq
@@ -117,10 +118,18 @@ lemma mylemma_k_le_m
       rw [← Nat.mul_sub_left_distrib]
       norm_num
     have g₂: 2 * a * d ≤ b ^ 2 + c ^ 2 := by
+      have hbc : 2 * (b:ℝ) * c ≤ b^2 + c^2 := two_mul_le_add_sq b c
+      have : 2 * b * c ≤ b^2 + c^2 := by
+        rw [← @Nat.cast_le ℝ]
+        push_cast
+        exact hbc
       rw [mul_assoc, h₃, ← mul_assoc]
-      exact two_mul_le_add_sq b c
+      exact this
     have g₃: 2 * a * d ≤ a ^ 2 + d ^ 2 := by
-      exact two_mul_le_add_sq a d
+      have had : 2 * (a:ℝ) * d ≤ a^2 + d^2 := two_mul_le_add_sq a d
+      rw [← @Nat.cast_le ℝ]
+      push_cast
+      exact had
     rw [g₁, ← Nat.add_sub_assoc (g₀) (b ^ 2 + c ^ 2)]
     rw [← Nat.add_sub_assoc (g₀) (a ^ 2 + d ^ 2)]
     rw [Nat.sub_add_comm g₂, Nat.sub_add_comm g₃]

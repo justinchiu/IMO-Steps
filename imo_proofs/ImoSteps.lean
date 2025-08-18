@@ -5,7 +5,7 @@ open Nat BigOperators Finset Real
 namespace ImoSteps
 
 -- Prime divisor helpers
--- Used in: (none currently)
+-- Used in: imo_1992_p1.lean (via prime_divisor_cases import)
 lemma prime_divisor_cases {p : ℕ} {x y : ℤ} (hp : Nat.Prime p) (h : x * y = ↑p) :
     x = -1 ∨ x = 1 ∨ x = -↑p ∨ x = ↑p := by
   have ha := Int.natAbs_eq x
@@ -22,7 +22,7 @@ lemma prime_divisor_cases {p : ℕ} {x y : ℤ} (hp : Nat.Prime p) (h : x * y = 
     cases ha <;> simp [*]
 
 -- Factorial helpers  
--- Used in: (none currently)
+-- Used in: (none yet - similar to factorial_product_bound)
 lemma factorial_bound_helper (n k : ℕ) (h : k ≤ n) :
     (k.factorial : ℚ) * (n - k).factorial ≤ n.factorial := by
   norm_cast
@@ -45,10 +45,11 @@ lemma recurrence_positive (f : ℕ → ℝ → ℝ)
     exact div_pos one_pos (Nat.cast_pos.mpr hn)
 
 -- AM-GM inequality for 2 terms
--- Used in: (none currently)
+-- Used in: imo_1984_p6.lean (lines 121, 123)
 lemma two_mul_le_add_sq (a b : ℝ) : 2 * a * b ≤ a^2 + b^2 := by
   have : 0 ≤ (a - b)^2 := sq_nonneg _
   linarith [this]
+
 
 -- Rearrangement inequality for 3 terms
 -- Used in: (none currently - imo_1983_p6 has different structure)
@@ -59,7 +60,7 @@ lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c)
   linarith
 
 -- Exponential growth bound
--- Used in: (none currently)
+-- Used in: imo_1997_p5.lean (via exp_bound_small import)
 lemma exp_bound_small (k : ℕ) (hk : 5 ≤ k) : 4 * k < 2 ^ k := by
   induction' k, hk using Nat.le_induction with n hn ih
   · norm_num
@@ -72,7 +73,7 @@ lemma exp_bound_small (k : ℕ) (hk : 5 ≤ k) : 4 * k < 2 ^ k := by
       _ = 2 ^ (n + 1) := by ring
 
 -- Sum vs product inequality
--- Used in: (none currently)
+-- Used in: imo_2022_p5.lean (via sum_lt_product import)
 lemma sum_lt_product (a b : ℕ) (ha : 2 ≤ a) (hab : a < b) : a + b < a * b := by
   calc a + b < b + b := add_lt_add_right hab b
     _ = 2 * b := by ring
@@ -187,6 +188,13 @@ lemma mult_bound_of_subadditive {f : ℕ → ℤ}
         _ ≤ f (k'.succ * m) + f m := by linarith [ih (by omega)]
         _ ≤ f (k'.succ * m + m) := h_sub _ _ (by positivity) hm
         _ = f ((k'.succ + 1) * m) := by ring_nf
+
+-- Trigonometric identities
+-- Used in: imo_1963_p5.lean (line 9)
+lemma sin_mul_cos (x y : ℝ) :
+    Real.sin x * Real.cos y = (sin (x + y) + sin (x - y)) / 2 := by
+  rw [sin_add, sin_sub]
+  simp
 
 -- Trigonometric sum patterns
 -- Used in: (none currently - imo_1969_p2 could use this)

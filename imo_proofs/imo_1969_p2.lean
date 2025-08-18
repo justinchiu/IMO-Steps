@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Real BigOperators
+open Real BigOperators ImoSteps
 
 theorem imo_1969_p2
   (m n : ℝ)
