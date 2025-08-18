@@ -4,56 +4,7 @@ set_option linter.unusedVariables.analyzeTactics true
 
 open Real ImoSteps
 
-lemma mylemma_1
-  (a b c : ℝ)
-  (x y z : ℝ)
-  (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
-  (h₂: c ≤ b ∧ b ≤ a)
-  (h₃: z ≤ y ∧ y ≤ x) :
-  a * z + c * y + b * x ≤ c * z + b * y + a * x := by
-  suffices h₄: c * (y - z) + b * (x - y) ≤ a * (x - z)
-  . linarith
-  . have h₅: c * (y - z) + b * (x - y) ≤ b * (y - z) + b * (x - y) := by
-      simp
-      refine mul_le_mul h₂.1 ?_ ?_ ?_
-      . exact le_rfl
-      . exact sub_nonneg_of_le h₃.1
-      . exact le_of_lt h₀.2.1
-    refine le_trans h₅ ?_
-    rw [mul_sub, mul_sub, add_comm]
-    rw [← add_sub_assoc, sub_add_cancel]
-    rw [← mul_sub]
-    refine mul_le_mul h₂.2 ?_ ?_ ?_
-    . exact le_rfl
-    . refine sub_nonneg_of_le ?_
-      exact le_trans h₃.1 h₃.2
-    . exact le_of_lt h₀.1
-
-
-lemma mylemma_2
-  (a b c : ℝ)
-  (x y z : ℝ)
-  (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
-  (h₂: c ≤ b ∧ b ≤ a)
-  (h₃: z ≤ y ∧ y ≤ x) :
-  b * z + a * y + c * x ≤ c * z + b * y + a * x := by
-  suffices h₄: c * (x - z) + b * (z - y) ≤ a * (x - y)
-  . linarith
-  . have h₅: c * (x - z) + b * (z - y) ≤ b * (x - z) + b * (z - y) := by
-      simp
-      refine mul_le_mul h₂.1 ?_ ?_ ?_
-      . exact le_rfl
-      . refine sub_nonneg_of_le ?_
-        exact le_trans h₃.1 h₃.2
-      . exact le_of_lt h₀.2.1
-    refine le_trans h₅ ?_
-    rw [mul_sub, mul_sub]
-    rw [← add_sub_assoc, sub_add_cancel]
-    rw [← mul_sub]
-    refine mul_le_mul h₂.2 ?_ ?_ ?_
-    . exact le_rfl
-    . exact sub_nonneg_of_le h₃.2
-    . exact le_of_lt h₀.1
+-- Now using rearrangement_prod_1 and rearrangement_prod_2 from ImoSteps
 
 
 -- case #1
@@ -86,7 +37,7 @@ lemma mylemma_cba
     linarith
   have g₄: (a * b) * (a * (b + c - a)) + (b * c) * (b * (a + c - b)) + (a * c) * (c * (a + b - c))
       ≤ (b * c) * (a * (b + c - a)) + (a * c) * (b * (a + c - b)) + (a * b) * (c * (a + b - c)) := by
-    refine mylemma_1 (a * b) (a * c) (b * c) (c * (a + b - c)) (b * (a + c - b)) (a * (b + c - a)) ?_ ?_ ?_
+    refine rearrangement_prod_1 (a * b) (a * c) (b * c) (c * (a + b - c)) (b * (a + c - b)) (a * (b + c - a)) ?_ ?_ ?_
     . constructor
       . exact mul_pos hap hbp
       . constructor
@@ -127,7 +78,7 @@ lemma mylemma_cba_tight
     linarith
   have g₄: (a * c) * (a * (b + c - a)) + (a * b) * (b * (a + c - b)) + (b * c) * (c * (a + b - c))
       ≤ (b * c) * (a * (b + c - a)) + (a * c) * (b * (a + c - b)) + (a * b) * (c * (a + b - c)) := by
-    refine mylemma_2 (a * b) (a * c) (b * c) (c * (a + b - c)) (b * (a + c - b)) (a * (b + c - a)) ?_ ?_ ?_
+    refine rearrangement_prod_2 (a * b) (a * c) (b * c) (c * (a + b - c)) (b * (a + c - b)) (a * (b + c - a)) ?_ ?_ ?_
     . constructor
       . exact mul_pos hap hbp
       . constructor

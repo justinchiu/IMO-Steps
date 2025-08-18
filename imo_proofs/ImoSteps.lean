@@ -80,13 +80,61 @@ lemma amgm_four (b1 b2 b3 b4 : ℝ)
     exact mul_nonneg hb1 hb2
 
 
--- Rearrangement inequality for 3 terms
--- Used in: imo_1983_p6.lean (has similar but different mylemma_1/mylemma_2)
+-- Rearrangement inequality for 3 terms (standard form)
+-- Used in: (none directly)
 lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c) 
     (hx : x ≤ y) (hy : y ≤ z) :
     a * z + b * y + c * x ≤ a * x + b * y + c * z := by
   have h1 : (c - a) * (z - x) ≥ 0 := mul_nonneg (by linarith) (by linarith)
   linarith
+
+-- Rearrangement for products (variant 1)
+-- Used in: imo_1983_p6.lean (lines 7-31)
+lemma rearrangement_prod_1 (a b c x y z : ℝ)
+    (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
+    (h₂: c ≤ b ∧ b ≤ a)
+    (h₃: z ≤ y ∧ y ≤ x) :
+    a * z + c * y + b * x ≤ c * z + b * y + a * x := by
+  suffices h₄: c * (y - z) + b * (x - y) ≤ a * (x - z) by linarith
+  have h₅: c * (y - z) + b * (x - y) ≤ b * (y - z) + b * (x - y) := by
+    simp
+    refine mul_le_mul h₂.1 ?_ ?_ ?_
+    · exact le_rfl
+    · exact sub_nonneg_of_le h₃.1
+    · exact le_of_lt h₀.2.1
+  refine le_trans h₅ ?_
+  rw [mul_sub, mul_sub, add_comm]
+  rw [← add_sub_assoc, sub_add_cancel]
+  rw [← mul_sub]
+  refine mul_le_mul h₂.2 ?_ ?_ ?_
+  · exact le_rfl
+  · refine sub_nonneg_of_le ?_
+    exact le_trans h₃.1 h₃.2
+  · exact le_of_lt h₀.1
+
+-- Rearrangement for products (variant 2)
+-- Used in: imo_1983_p6.lean (lines 33-57)
+lemma rearrangement_prod_2 (a b c x y z : ℝ)
+    (h₀ : 0 < a ∧ 0 < b ∧ 0 < c)
+    (h₂: c ≤ b ∧ b ≤ a)
+    (h₃: z ≤ y ∧ y ≤ x) :
+    b * z + a * y + c * x ≤ c * z + b * y + a * x := by
+  suffices h₄: c * (x - z) + b * (z - y) ≤ a * (x - y) by linarith
+  have h₅: c * (x - z) + b * (z - y) ≤ b * (x - z) + b * (z - y) := by
+    simp
+    refine mul_le_mul h₂.1 ?_ ?_ ?_
+    · exact le_rfl
+    · refine sub_nonneg_of_le ?_
+      exact le_trans h₃.1 h₃.2
+    · exact le_of_lt h₀.2.1
+  refine le_trans h₅ ?_
+  rw [mul_sub, mul_sub]
+  rw [← add_sub_assoc, sub_add_cancel]
+  rw [← mul_sub]
+  refine mul_le_mul h₂.2 ?_ ?_ ?_
+  · exact le_rfl
+  · exact sub_nonneg_of_le h₃.2
+  · exact le_of_lt h₀.1
 
 -- Exponential growth bound
 -- Used in: imo_1997_p5.lean (via exp_bound_small import)
@@ -224,6 +272,13 @@ lemma sin_mul_cos (x y : ℝ) :
     Real.sin x * Real.cos y = (sin (x + y) + sin (x - y)) / 2 := by
   rw [sin_add, sin_sub]
   simp
+
+-- Square root algebraic identity
+-- Used in: imo_1962_p2.lean (lines 19-26)
+lemma sqrt_diff_sq (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    a + b - 2 * sqrt a * sqrt b = (sqrt a - sqrt b)^2 := by
+  rw [sub_sq, sq_sqrt ha, sq_sqrt hb]
+  ring
 
 -- Trigonometric sum patterns
 -- Used in: imo_1969_p2.lean (has similar manual expansion)

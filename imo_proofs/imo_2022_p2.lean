@@ -1,4 +1,5 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
 
@@ -58,6 +59,7 @@ theorem imo_2022_p2_simple
     have g₅: (x - y) ^ 2 < 0 := by
       rw [sub_sq, sub_add_eq_add_sub]
       exact sub_neg.mpr g₄
+    -- This contradicts that squares are non-negative
     have g₆: (x - y) ≠ 0 := by exact sub_ne_zero.mpr hc
     have g₇: 0 < (x - y) ^ 2 := by exact (sq_pos_iff).mpr g₆
     have g₈: (0:ℝ) ≠ 0 := by

@@ -1,6 +1,7 @@
 import Mathlib
+import ImoSteps
 
-open Real
+open Real ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
 
