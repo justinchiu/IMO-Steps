@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Int Rat
+open Int Rat ImoSteps
 
 
 lemma mylemma_main_lt2

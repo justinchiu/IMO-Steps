@@ -1,8 +1,9 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
 
-open Nat
+open Nat ImoSteps
 
 theorem imo_1981_p6
   (f : ℕ → ℕ → ℕ)
@@ -10,17 +11,7 @@ theorem imo_1981_p6
   (h₁ : ∀ x, f (x + 1) 0 = f x 1)
   (h₂ : ∀ x y, f (x + 1) (y + 1) = f x (f (x + 1) y)) :
   ∀ y, f 4 (y + 1) = 2 ^ (f 4 y + 3) - 3 := by
-  have h₃: ∀ y, f 1 y = y + 2 := by
-    intro y
-    induction' y with n hn
-    . simp_all only [zero_eq, zero_add]
-    . nth_rw 1 [← zero_add 1]
-      rw [h₂ 0 n, h₀ (f (0 + 1) n), hn]
-  have h₄: ∀ y, f 2 y = 2 * y + 3 := by
-    intro y
-    induction' y with n hn
-    . simp_all only [zero_eq, zero_add, mul_zero]
-    . rw [h₂, h₃, hn, mul_add]
+  have ⟨_, h₄⟩ := ackermann_pattern f h₀ h₁ h₂
   have h₅: ∀ y, f 3 y =  2 ^ (y + 3) - 3 := by
     intro y
     induction' y with n hn

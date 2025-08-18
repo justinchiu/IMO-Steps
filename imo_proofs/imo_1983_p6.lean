@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Real
+open Real ImoSteps
 
 lemma mylemma_1
   (a b c : ℝ)

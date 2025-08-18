@@ -1,7 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Nat
+open Nat ImoSteps
 
 
 lemma mylemma_1
@@ -33,24 +34,6 @@ lemma mylemma_1
     exact le_trans h₄ h₃
 
 
-lemma mylemma_2
-  (b: ℕ) :
-  (b.factorial ≤ b ^ b) := by
-  -- exact factorial_le_pow b
-  -- lean 4 has the lemma factorial_le_pow
-  induction' b with n hi
-  . norm_num
-  . by_cases hnp: 0 < n
-    . rw [ factorial_succ, pow_add, pow_one, mul_comm ]
-      refine mul_le_mul_right (n + 1) ?_
-      have h₂: n^ n ≤ (n + 1)^n := by
-        refine (Nat.pow_le_pow_iff_left ?_).mpr ?_
-        . linarith
-        . linarith
-      exact le_trans hi h₂
-    . push_neg at hnp
-      interval_cases n
-      simp
 
 
 lemma mylemma_3
@@ -67,16 +50,6 @@ lemma mylemma_3
   exact Nat.Prime.dvd_of_dvd_pow hp h₄
 
 
-lemma mylemma_42
-  (a b : ℕ)
-  (h₀: 2 ≤ a)
-  (h₁: a < b) :
-  (a + b < a * b ) := by
-  have h₂: a + b < b + b := by exact add_lt_add_right h₁ b
-  have h₃: b + b ≤ a * b := by
-    rw [← two_mul]
-    exact mul_le_mul_right' h₀ b
-  exact gt_of_ge_of_gt h₃ h₂
 
 
 lemma mylemma_43
@@ -185,7 +158,7 @@ lemma mylemma_41
     refine lt_of_le_of_lt h₄ ?_
     rw [add_comm]
     nth_rewrite 2 [mul_comm]
-    refine mylemma_42 p ((p ^ 2) ^ (p - 1) * p) gp ?_
+    refine sum_lt_product p ((p ^ 2) ^ (p - 1) * p) gp ?_
     refine lt_mul_left (by linarith) ?_
     rw [← pow_mul]
     refine Nat.one_lt_pow ?_ (Nat.lt_of_succ_le gp)
@@ -533,7 +506,7 @@ theorem imo_2022_p5
         . exact h₀.2
         . norm_num
         . exact Nat.zero_le p
-      have g₄: b.factorial ≤ b^b := by exact Nat.factorial_le_pow b
+      have g₄: b.factorial ≤ b^b := by exact ImoSteps.factorial_le_pow b
       have g₅: b^b ≤ b^p := by
         refine Nat.pow_le_pow_of_le_right h₀.2 ?_
         exact le_of_lt hbp

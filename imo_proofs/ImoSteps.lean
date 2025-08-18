@@ -51,7 +51,7 @@ lemma two_mul_le_add_sq (a b : ℝ) : 2 * a * b ≤ a^2 + b^2 := by
   linarith [this]
 
 -- Rearrangement inequality for 3 terms
--- Used in: imo_1983_p6.lean (line 13)
+-- Used in: (none currently - imo_1983_p6 has different structure)
 lemma rearrangement_three (a b c x y z : ℝ) (ha : a ≤ b) (hb : b ≤ c) 
     (hx : x ≤ y) (hy : y ≤ z) :
     a * z + b * y + c * x ≤ a * x + b * y + c * z := by
@@ -99,12 +99,12 @@ lemma factorial_le_pow (n : ℕ) : n.factorial ≤ n ^ n := by
 
 
 -- Triangle inequality helper
--- Used in: imo_1964_p2.lean (lines 15-17, used 3 times)
+-- Used in: imo_1964_p2.lean (lines 20, 23, 26)
 lemma triangle_aux (x y z : ℝ) : (x + y - z) * (x + z - y) ≤ x^2 := by
   nlinarith [sq_nonneg (y - z)]
 
 -- Ackermann-like recurrence pattern
--- Used in: imo_1981_p6.lean (line 11)
+-- Used in: imo_1981_p6.lean (line 14)
 lemma ackermann_pattern (f : ℕ → ℕ → ℕ)
     (h₀ : ∀ y, f 0 y = y + 1)
     (h₁ : ∀ x, f (x + 1) 0 = f x 1)
@@ -162,7 +162,7 @@ lemma modEq_pow_of_modEq (a b n m : ℕ) (h : a ≡ b [MOD m]) :
     a^n ≡ b^n [MOD m] := ModEq.pow n h
 
 -- Subadditivity pattern for functional equations
--- Used in: imo_1982_p1.lean (line 13)
+-- Used in: imo_1982_p1.lean (line 20)
 lemma subadditive_of_delta {f : ℕ → ℤ} 
     (h : ∀ m n, 0 < m → 0 < n → f (m + n) - f m - f n ∈ ({0, 1} : Set ℤ)) :
     ∀ m n, 0 < m → 0 < n → f m + f n ≤ f (m + n) := by
@@ -174,7 +174,7 @@ lemma subadditive_of_delta {f : ℕ → ℤ}
   | inr h2 => linarith
 
 -- Multiplicative bound from subadditivity
--- Used in: imo_1982_p1.lean (line 14)
+-- Used in: imo_1982_p1.lean (line 21)
 lemma mult_bound_of_subadditive {f : ℕ → ℤ}
     (h_sub : ∀ m n, 0 < m → 0 < n → f m + f n ≤ f (m + n)) :
     ∀ m k, 0 < m → 0 < k → k * f m ≤ f (k * m) := by
@@ -230,5 +230,25 @@ lemma factorial_product_bound (n k : ℕ) (h : k ≤ n) :
   have : k.factorial * (n - k).factorial ∣ n.factorial := 
     Nat.factorial_mul_factorial_dvd_factorial h
   exact Nat.le_of_dvd (Nat.factorial_pos n) this
+
+-- Quadratic non-residues modulo 5
+-- Used in: imo_1974_p3.lean (lines 418, 428)
+lemma not_square_mod_5_eq_2 (a : ℕ) : ¬ a^2 ≡ 2 [MOD 5] := by
+  intro h
+  let b := a % 5
+  have hb : a ≡ b [MOD 5] := Nat.mod_modEq a 5 |>.symm
+  have : a^2 ≡ b^2 [MOD 5] := ModEq.pow 2 hb
+  have hb2 : b^2 ≡ 2 [MOD 5] := ModEq.trans this.symm h
+  have : b < 5 := Nat.mod_lt a (by norm_num : 0 < 5)
+  interval_cases b <;> (simp only [pow_two, ModEq] at hb2; norm_num at hb2)
+
+lemma not_square_mod_5_eq_3 (a : ℕ) : ¬ a^2 ≡ 3 [MOD 5] := by
+  intro h
+  let b := a % 5
+  have hb : a ≡ b [MOD 5] := Nat.mod_modEq a 5 |>.symm
+  have : a^2 ≡ b^2 [MOD 5] := ModEq.pow 2 hb
+  have hb2 : b^2 ≡ 3 [MOD 5] := ModEq.trans this.symm h
+  have : b < 5 := Nat.mod_lt a (by norm_num : 0 < 5)
+  interval_cases b <;> (simp only [pow_two, ModEq] at hb2; norm_num at hb2)
 
 end ImoSteps

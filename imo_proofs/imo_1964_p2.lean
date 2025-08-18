@@ -1,17 +1,8 @@
 import Mathlib
+import ImoSteps
 set_option linter.unusedVariables.analyzeTactics true
 
-open Real
-
-
-lemma le_a_sq
-  (a b c : ℝ) :
-  (a + b - c) * (a + c - b) ≤ a ^ 2 := by
-  have h1: (a + b - c) * (a + c - b) = a ^ 2 - (b - c) ^ 2 := by
-    linarith
-  have h2: 0 ≤ (b - c) ^ 2 := by exact pow_two_nonneg (b - c)
-  rw [h1]
-  exact sub_le_self _ h2
+open Real ImoSteps
 
 
 theorem imo_1964_p2
@@ -26,13 +17,13 @@ theorem imo_1964_p2
   have hc : 0 < a + b - c := by exact sub_pos.mpr h₁
   have h₄: ((a + b - c) * (a + c - b) * (b + c - a)) ^ 2 ≤ (a * b * c) ^ 2 := by
     have h₄₁: (a + b - c) * (a + c - b) ≤ a ^ 2 := by
-      exact le_a_sq a b c
+      exact triangle_aux a b c
     have h₄₂: (a + b - c) * (b + c - a) ≤ b ^ 2 := by
       rw [add_comm a b]
-      exact le_a_sq b a c
+      exact triangle_aux b a c
     have h₄₃: (a + c - b) * (b + c - a) ≤ c ^ 2 := by
       rw [add_comm a c, add_comm b c]
-      exact le_a_sq c a b
+      exact triangle_aux c a b
     have h₄₄: ((a + b - c) * (a + c - b) * (b + c - a)) ^ 2 = ((a + b - c) * (a + c - b)) *
         ((a + b - c) * (b + c - a)) * ((a + c - b) * (b + c - a)) := by
       linarith

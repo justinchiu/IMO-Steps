@@ -31,6 +31,7 @@ Refactor and compress the Lean sources as much as possible while keeping all pro
 - Replace duplicated proof logic with calls to shared lemmas from `ImoSteps.lean`.
 - Continuously verify that `lake build` works after each change.
 - Ensure all `sorry` statements are removed before moving on to the next file.
+- Revisit all previous proofs to check if more shared lemmas can be abstracted.
 
 ## Important Note
 - **Avoid naive tactic rewriting** - Simply reformatting tactics or combining lines without semantic abstraction does not achieve meaningful compression.
